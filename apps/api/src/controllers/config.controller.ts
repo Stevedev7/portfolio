@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { getConfig, updateConfig } from "../services/config.service";
-import { configSchema } from "../schemas/config.schema";
+import { configSchema } from "@portfolio/schemas";
 import logger from "../config/logger";
 import { sendSuccess, sendError } from "../utils/response";
 

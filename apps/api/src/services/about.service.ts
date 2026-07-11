@@ -1,5 +1,5 @@
 import { env } from "../config/env";
-import { aboutSchema, type About } from "../schemas/about.schema";
+import { aboutSchema, type About } from "@portfolio/schemas";
 
 export  const getAbout = async (): Promise<About> => {
   const response = await fetch(`${env.JSON_SERVER_URL}/about`);

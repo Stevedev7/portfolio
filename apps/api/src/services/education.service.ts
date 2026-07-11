@@ -1,5 +1,5 @@
 import { env } from "../config/env";
-import { educationSchema, type Education, type CreateEducationInput } from "../schemas/education.schema";
+import { educationSchema, type Education, type CreateEducationInput } from "@portfolio/schemas";
 import { z } from "zod";
 
 export const getAllEducation = async (): Promise<Education[]> => {

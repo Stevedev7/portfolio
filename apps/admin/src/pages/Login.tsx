@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { Button, Input } from "@portfolio/ui";
 import { useLoginMutation } from "../store/authApi";
 import { setToken } from "../store/authSlice";
 
@@ -27,31 +28,27 @@ const Login = () => {
       <form onSubmit={handleSubmit} className="w-80 rounded bg-white p-6 shadow">
         <h1 className="mb-4 text-xl font-semibold">Admin Login</h1>
 
-        <input
+        <Input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mb-3 w-full rounded border px-3 py-2"
+          className="mb-3"
         />
 
-        <input
+        <Input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-3 w-full rounded border px-3 py-2"
+          className="mb-3"
         />
 
         {error && <p className="mb-3 text-sm text-red-600">Invalid credentials</p>}
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full rounded bg-blue-600 py-2 text-white disabled:opacity-50"
-        >
+        <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading ? "Logging in..." : "Login"}
-        </button>
+        </Button>
       </form>
     </div>
   );

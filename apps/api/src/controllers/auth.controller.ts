@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { loginSchema } from "../schemas/auth.schema";
+import { loginSchema } from "@portfolio/schemas";
 import { verifyCredentials, generateToken } from "../services/auth.service";
 import logger from "../config/logger";
 import { sendSuccess, sendError } from "../utils/response";
