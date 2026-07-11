@@ -5,6 +5,7 @@ import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import About from "./pages/About";
 import Skills from "./pages/Skills";
+import Experience from "./pages/Experience";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
           <Route path="/skills" element={<Skills />} />
+          <Route path="/experience" element={<Experience />} />
         </Route>
       </Routes>
     </BrowserRouter>
