@@ -6,6 +6,40 @@ GET {{baseUrl}}/health
 ### Get all projects
 GET {{baseUrl}}/projects
 
+### Get project by id
+GET {{baseUrl}}/projects/1
+
+### Create project
+POST {{baseUrl}}/projects
+Content-Type: application/json
+
+{
+  "title": "Portfolio Platform",
+  "description": ["Full-stack monorepo project", "Self-hosted on Kubernetes"],
+  "imageUrl": "https://example.com/image.jpg",
+  "liveUrl": "https://example.com",
+  "repoUrl": "https://github.com/example/repo",
+  "featured": true,
+  "skillIds": [1]
+}
+
+### Update project
+PUT {{baseUrl}}/projects/1
+Content-Type: application/json
+
+{
+  "title": "Portfolio Platform",
+  "description": ["Full-stack monorepo project", "Self-hosted on Kubernetes", "CI/CD via GitHub Actions"],
+  "imageUrl": "https://example.com/image.jpg",
+  "liveUrl": "https://example.com",
+  "repoUrl": "https://github.com/example/repo",
+  "featured": true,
+  "skillIds": [1, 2]
+}
+
+### Delete project
+DELETE {{baseUrl}}/projects/1
+
 ### Get about
 GET {{baseUrl}}/about
 
