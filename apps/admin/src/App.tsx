@@ -9,6 +9,7 @@ import Experience from "./pages/Experience";
 import Education from "./pages/Education";
 import Projects from "./pages/Projects";
 import Certifications from "./pages/Certifications";
+import Config from "./pages/Config";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/education" element={<Education />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/certifications" element={<Certifications />} />
+          <Route path="/config" element={<Config />} />
         </Route>
       </Routes>
     </BrowserRouter>
