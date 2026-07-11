@@ -27,3 +27,69 @@ Content-Type: application/json
     "linkedin": "https://linkedin.com/in/stevedev7"
   }
 }
+
+### Get all skills
+GET {{baseUrl}}/skills
+
+### Get skill by id
+GET {{baseUrl}}/skills/1
+
+### Create skill
+POST {{baseUrl}}/skills
+Content-Type: application/json
+
+{
+  "name": "TypeScript",
+  "category": "Backend",
+  "proficiency": "Advanced"
+}
+
+### Update skill
+PUT {{baseUrl}}/skills/1
+Content-Type: application/json
+
+{
+  "name": "TypeScript",
+  "category": "Backend",
+  "proficiency": "Expert"
+}
+
+### Delete skill
+DELETE {{baseUrl}}/skills/1
+
+### Get all experience
+GET {{baseUrl}}/experience
+
+### Get experience by id
+GET {{baseUrl}}/experience/1
+
+### Create experience
+POST {{baseUrl}}/experience
+Content-Type: application/json
+
+{
+  "company": "Example Corp",
+  "role": "Software Engineer",
+  "startDate": "2022-01-01",
+  "endDate": null,
+  "description": ["Built things", "Fixed things"],
+  "location": "Remote",
+  "skillIds": [1]
+}
+
+### Update experience
+PUT {{baseUrl}}/experience/1
+Content-Type: application/json
+
+{
+  "company": "Example Corp",
+  "role": "Senior Software Engineer",
+  "startDate": "2022-01-01",
+  "endDate": null,
+  "description": ["Built things", "Fixed things", "Led a team"],
+  "location": "Remote",
+  "skillIds": [1, 2]
+}
+
+### Delete experience
+DELETE {{baseUrl}}/experience/1

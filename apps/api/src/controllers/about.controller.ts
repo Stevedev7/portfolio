@@ -2,29 +2,30 @@ import type { Request, Response } from "express";
 import { getAbout, updateAbout } from "../services/about.service";
 import { aboutSchema } from "../schemas/about.schema";
 import logger from "../config/logger";
+import { sendSuccess, sendError } from "../utils/response";
 
-export async function getAboutHandler(_req: Request, res: Response) {
+export const getAboutHandler = async (_req: Request, res: Response) => {
   try {
     const about = await getAbout();
-    res.status(200).json(about);
+    sendSuccess(res, about, "About fetched successfully");
   } catch (error) {
     logger.error("Failed to get about", { error });
-    res.status(502).json({ message: "Failed to fetch about" });
+    sendError(res, "Failed to fetch about", 502);
   }
-}
+};
 
-export async function updateAboutHandler(req: Request, res: Response) {
+export const updateAboutHandler = async (req: Request, res: Response) => {
   const parsed = aboutSchema.safeParse(req.body);
 
   if (!parsed.success) {
-    return res.status(400).json({ message: "Invalid about data", errors: parsed.error.format() });
+    return sendError(res, "Invalid about data", 400);
   }
 
   try {
     const updated = await updateAbout(parsed.data);
-    res.status(200).json(updated);
+    sendSuccess(res, updated, "About updated successfully");
   } catch (error) {
     logger.error("Failed to update about", { error });
-    res.status(502).json({ message: "Failed to update about" });
+    sendError(res, "Failed to update about", 502);
   }
-}
+};

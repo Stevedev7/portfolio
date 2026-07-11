@@ -1,6 +1,6 @@
 import { env } from "../config/env";
 
-export async function getAllProjects() {
+export const getAllProjects = async () => {
   const response = await fetch(`${env.JSON_SERVER_URL}/projects`);
 
   if (!response.ok) {
