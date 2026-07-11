@@ -93,3 +93,36 @@ Content-Type: application/json
 
 ### Delete experience
 DELETE {{baseUrl}}/experience/1
+
+### Get all education
+GET {{baseUrl}}/education
+
+### Get education by id
+GET {{baseUrl}}/education/1
+
+### Create education
+POST {{baseUrl}}/education
+Content-Type: application/json
+
+{
+  "institution": "Example University",
+  "degree": "Bachelor of Science",
+  "fieldOfStudy": "Computer Science",
+  "startDate": "2018-09-01",
+  "endDate": "2022-06-01"
+}
+
+### Update education
+PUT {{baseUrl}}/education/1
+Content-Type: application/json
+
+{
+  "institution": "Example University",
+  "degree": "Bachelor of Science",
+  "fieldOfStudy": "Computer Science and Engineering",
+  "startDate": "2018-09-01",
+  "endDate": "2022-06-01"
+}
+
+### Delete education
+DELETE {{baseUrl}}/education/1
