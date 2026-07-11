@@ -6,6 +6,7 @@ import {
   updateProjectHandler,
   deleteProjectHandler,
 } from "../controllers/projects.controller";
+import { requireAuth } from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -21,14 +22,18 @@ const router = Router();
  *   post:
  *     summary: Create a new project
  *     tags: [Projects]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Project created
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/", listProjects);
-router.post("/", createProjectHandler);
+router.post("/", requireAuth, createProjectHandler);
 
 /**
  * @openapi
@@ -50,6 +55,8 @@ router.post("/", createProjectHandler);
  *   put:
  *     summary: Update a project
  *     tags: [Projects]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -59,9 +66,13 @@ router.post("/", createProjectHandler);
  *     responses:
  *       200:
  *         description: Project updated
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Delete a project
  *     tags: [Projects]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -71,9 +82,11 @@ router.post("/", createProjectHandler);
  *     responses:
  *       200:
  *         description: Project deleted
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/:id", getProject);
-router.put("/:id", updateProjectHandler);
-router.delete("/:id", deleteProjectHandler);
+router.put("/:id", requireAuth, updateProjectHandler);
+router.delete("/:id", requireAuth, deleteProjectHandler);
 
 export default router;

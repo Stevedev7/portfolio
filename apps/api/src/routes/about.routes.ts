@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getAboutHandler, updateAboutHandler } from "../controllers/about.controller";
+import { requireAuth } from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -15,13 +16,17 @@ const router = Router();
  *   put:
  *     summary: Update about/bio information
  *     tags: [About]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: About updated
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/", getAboutHandler);
-router.put("/", updateAboutHandler);
+router.put("/", requireAuth, updateAboutHandler);
 
 export default router;

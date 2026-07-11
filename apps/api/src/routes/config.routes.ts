@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getConfigHandler, updateConfigHandler } from "../controllers/config.controller";
+import { requireAuth } from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -15,13 +16,17 @@ const router = Router();
  *   put:
  *     summary: Update site section visibility config
  *     tags: [Config]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Config updated
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/", getConfigHandler);
-router.put("/", updateConfigHandler);
+router.put("/", requireAuth, updateConfigHandler);
 
 export default router;

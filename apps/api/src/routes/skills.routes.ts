@@ -6,6 +6,7 @@ import {
   updateSkillHandler,
   deleteSkillHandler,
 } from "../controllers/skills.controller";
+import { requireAuth } from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -21,6 +22,8 @@ const router = Router();
  *   post:
  *     summary: Create a new skill
  *     tags: [Skills]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -39,9 +42,11 @@ const router = Router();
  *         description: Skill created
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/", listSkills);
-router.post("/", createSkillHandler);
+router.post("/", requireAuth, createSkillHandler);
 
 /**
  * @openapi
@@ -63,6 +68,8 @@ router.post("/", createSkillHandler);
  *   put:
  *     summary: Update a skill
  *     tags: [Skills]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -72,9 +79,13 @@ router.post("/", createSkillHandler);
  *     responses:
  *       200:
  *         description: Skill updated
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Delete a skill
  *     tags: [Skills]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -84,11 +95,13 @@ router.post("/", createSkillHandler);
  *     responses:
  *       200:
  *         description: Skill deleted
+ *       401:
+ *         description: Unauthorized
  *       409:
  *         description: Skill still referenced elsewhere
  */
 router.get("/:id", getSkill);
-router.put("/:id", updateSkillHandler);
-router.delete("/:id", deleteSkillHandler);
+router.put("/:id", requireAuth, updateSkillHandler);
+router.delete("/:id", requireAuth, deleteSkillHandler);
 
 export default router;

@@ -6,6 +6,7 @@ import {
   updateExperienceHandler,
   deleteExperienceHandler,
 } from "../controllers/experience.controller";
+import { requireAuth } from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -21,14 +22,18 @@ const router = Router();
  *   post:
  *     summary: Create a new experience entry
  *     tags: [Experience]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Experience created
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/", listExperience);
-router.post("/", createExperienceHandler);
+router.post("/", requireAuth, createExperienceHandler);
 
 /**
  * @openapi
@@ -50,6 +55,8 @@ router.post("/", createExperienceHandler);
  *   put:
  *     summary: Update an experience entry
  *     tags: [Experience]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -59,9 +66,13 @@ router.post("/", createExperienceHandler);
  *     responses:
  *       200:
  *         description: Experience updated
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Delete an experience entry
  *     tags: [Experience]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -71,9 +82,11 @@ router.post("/", createExperienceHandler);
  *     responses:
  *       200:
  *         description: Experience deleted
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/:id", getExperience);
-router.put("/:id", updateExperienceHandler);
-router.delete("/:id", deleteExperienceHandler);
+router.put("/:id", requireAuth, updateExperienceHandler);
+router.delete("/:id", requireAuth, deleteExperienceHandler);
 
 export default router;
