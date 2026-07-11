@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build"
+  },
+  "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",
     "packages/*"
