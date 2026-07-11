@@ -7,6 +7,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3001),
   JSON_SERVER_URL: z.string().url(),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  ALLOWED_ORIGINS: z.string().default("http://localhost:5173,http://localhost:3000"),
 });
 
 const parsed = envSchema.safeParse(process.env);

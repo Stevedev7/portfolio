@@ -1,5 +1,8 @@
 import { env } from "../config/env";
+import { projectSchema } from "../schemas/project.schema";
 import { skillSchema, type Skill, type CreateSkillInput } from "../schemas/skill.schema";
+import { experienceSchema } from "../schemas/experience.schema";
+import { certificationSchema } from "../schemas/certification.schema";
 import { z } from "zod";
 
 export const getAllSkills = async (): Promise<Skill[]> => {
@@ -35,9 +38,38 @@ export const updateSkill = async (id: string, input: CreateSkillInput): Promise<
   return skillSchema.parse(await response.json());
 }
 
+
+export const findSkillReferences = async (id: string): Promise<string[]> => {
+  const skillId = Number(id);
+
+  const [projectsRes, experienceRes, certificationsRes] = await Promise.all([
+    fetch(`${env.JSON_SERVER_URL}/projects`),
+    fetch(`${env.JSON_SERVER_URL}/workExperience`),
+    fetch(`${env.JSON_SERVER_URL}/certifications`),
+  ]);
+
+  const projects = z.array(projectSchema).parse(await projectsRes.json());
+  const experience = z.array(experienceSchema).parse(await experienceRes.json());
+  const certifications = z.array(certificationSchema).parse(await certificationsRes.json());
+
+  const referencedIn: string[] = [];
+
+  if (projects.some((p) => p.skillIds.includes(skillId))) {
+    referencedIn.push("projects");
+  }
+  if (experience.some((e) => e.skillIds.includes(skillId))) {
+    referencedIn.push("workExperience");
+  }
+  if (certifications.some((c) => c.skillIds.includes(skillId))) {
+    referencedIn.push("certifications");
+  }
+
+  return referencedIn;
+};
+
 export const deleteSkill = async (id: string): Promise<void> => {
   const response = await fetch(`${env.JSON_SERVER_URL}/skills/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) throw new Error(`Failed to delete skill: ${response.status}`);
-}
+};

@@ -5,6 +5,7 @@ import {
   createSkill,
   updateSkill,
   deleteSkill,
+  findSkillReferences,
 } from "../services/skills.service";
 import { createSkillSchema } from "../schemas/skill.schema";
 import logger from "../config/logger";
@@ -60,8 +61,15 @@ export const updateSkillHandler = async (req: Request, res: Response) => {
 
 export const deleteSkillHandler = async (req: Request, res: Response) => {
   try {
-    await deleteSkill(req.params.id as string);
-    sendSuccess(res, null, "Skill deleted successfully", 200);
+    const id = req.params.id as string;
+    const references = await findSkillReferences(id);
+
+    if (references.length > 0) {
+      return sendError(res, `Cannot delete skill: still referenced in ${references.join(", ")}`, 409);
+    }
+
+    await deleteSkill(id);
+    sendSuccess(res, null, "Skill deleted successfully");
   } catch (error) {
     logger.error("Failed to delete skill", { error });
     sendError(res, "Failed to delete skill", 502);
