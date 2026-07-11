@@ -1,0 +1,13 @@
+{
+  "name": "steve",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "2.10.4"
+  }
+}
