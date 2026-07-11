@@ -160,3 +160,38 @@ Content-Type: application/json
 
 ### Delete education
 DELETE {{baseUrl}}/education/1
+
+### Get all certifications
+GET {{baseUrl}}/certifications
+
+### Get certification by id
+GET {{baseUrl}}/certifications/1
+
+### Create certification
+POST {{baseUrl}}/certifications
+Content-Type: application/json
+
+{
+  "name": "Example Certification",
+  "issuingOrganization": "Example Org",
+  "issueDate": "2023-05-01",
+  "expiryDate": null,
+  "credentialUrl": "https://example.com/credential",
+  "skillIds": [1]
+}
+
+### Update certification
+PUT {{baseUrl}}/certifications/1
+Content-Type: application/json
+
+{
+  "name": "Example Certification",
+  "issuingOrganization": "Example Org",
+  "issueDate": "2023-05-01",
+  "expiryDate": "2026-05-01",
+  "credentialUrl": "https://example.com/credential",
+  "skillIds": [1, 2]
+}
+
+### Delete certification
+DELETE {{baseUrl}}/certifications/1
