@@ -1,0 +1,29 @@
+@baseUrl = http://localhost:3001
+
+### Health check
+GET {{baseUrl}}/health
+
+### Get all projects
+GET {{baseUrl}}/projects
+
+### Get about
+GET {{baseUrl}}/about
+
+### Update about
+PUT {{baseUrl}}/about
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Steve Pinto",
+  "title": "Software Engineer",
+  "summary": "I am an engineer",
+  "bio": "Longer bio text goes here",
+  "email": "steve@shbre.co.uk",
+  "location": "London, United Kingdom",
+  "avatarUrl": "https://example.com/avatar.jpg",
+  "socialLinks": {
+    "github": "https://github.com/Stevedev7",
+    "linkedin": "https://linkedin.com/in/stevedev7"
+  }
+}

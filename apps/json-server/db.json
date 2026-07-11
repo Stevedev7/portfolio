@@ -6,14 +6,17 @@
   "certifications": [],
   "about": {
     "id": 1,
-    "name": "",
-    "title": "",
-    "summary": "",
-    "bio": "",
-    "email": "",
-    "location": "",
-    "avatarUrl": "",
-    "socialLinks": {}
+    "name": "Steve Pinto",
+    "title": "Software Engineer",
+    "summary": "I am an engineer",
+    "bio": "Longer bio text goes here",
+    "email": "steve@shbre.co.uk",
+    "location": "London, United Kingdom",
+    "avatarUrl": "https://example.com/avatar.jpg",
+    "socialLinks": {
+      "github": "https://github.com/Stevedev7",
+      "linkedin": "https://linkedin.com/in/stevedev7"
+    }
   },
   "config": {
     "id": 1,
