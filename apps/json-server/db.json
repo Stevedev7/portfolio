@@ -1,3 +1,27 @@
 {
-  "projects": []
+  "projects": [],
+  "workExperience": [],
+  "skills": [],
+  "education": [],
+  "certifications": [],
+  "about": {
+    "id": 1,
+    "name": "",
+    "title": "",
+    "summary": "",
+    "bio": "",
+    "email": "",
+    "location": "",
+    "avatarUrl": "",
+    "socialLinks": {}
+  },
+  "config": {
+    "id": 1,
+    "projects": true,
+    "workExperience": true,
+    "skills": true,
+    "education": true,
+    "certifications": true,
+    "about": true
+  }
 }
