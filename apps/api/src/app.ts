@@ -12,6 +12,8 @@ import { healthCheckHandler } from "./controllers/health.controller";
 import cors from "cors";
 import { env } from "./config/env";
 import helmet from "helmet";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 
 const app = express();
 
@@ -34,6 +36,7 @@ app.use("/experience", experienceRoutes);
 app.use("/education", educationRoutes);
 app.use("/certifications", certificationsRoutes);
 app.use("/config", configRoutes);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use((_req, res) => {
   sendError(res, "Route not found", 404);
