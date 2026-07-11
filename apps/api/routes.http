@@ -195,3 +195,20 @@ Content-Type: application/json
 
 ### Delete certification
 DELETE {{baseUrl}}/certifications/1
+
+### Get config
+GET {{baseUrl}}/config
+
+### Update config
+PUT {{baseUrl}}/config
+Content-Type: application/json
+
+{
+  "id": 1,
+  "projects": true,
+  "workExperience": true,
+  "skills": true,
+  "education": true,
+  "certifications": true,
+  "about": true
+}
