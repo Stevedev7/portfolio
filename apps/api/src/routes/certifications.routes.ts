@@ -6,6 +6,7 @@ import {
   updateCertificationHandler,
   deleteCertificationHandler,
 } from "../controllers/certifications.controller";
+import { requireAuth } from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -21,14 +22,18 @@ const router = Router();
  *   post:
  *     summary: Create a new certification
  *     tags: [Certifications]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Certification created
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/", listCertifications);
-router.post("/", createCertificationHandler);
+router.post("/", requireAuth, createCertificationHandler);
 
 /**
  * @openapi
@@ -50,6 +55,8 @@ router.post("/", createCertificationHandler);
  *   put:
  *     summary: Update a certification
  *     tags: [Certifications]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -59,9 +66,13 @@ router.post("/", createCertificationHandler);
  *     responses:
  *       200:
  *         description: Certification updated
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Delete a certification
  *     tags: [Certifications]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -71,9 +82,11 @@ router.post("/", createCertificationHandler);
  *     responses:
  *       200:
  *         description: Certification deleted
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/:id", getCertification);
-router.put("/:id", updateCertificationHandler);
-router.delete("/:id", deleteCertificationHandler);
+router.put("/:id", requireAuth, updateCertificationHandler);
+router.delete("/:id", requireAuth, deleteCertificationHandler);
 
 export default router;

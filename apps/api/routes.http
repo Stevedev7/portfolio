@@ -213,3 +213,11 @@ Content-Type: application/json
   "about": true
 }
 
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "yourpassword"
+}

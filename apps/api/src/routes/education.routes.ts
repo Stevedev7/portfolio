@@ -6,6 +6,7 @@ import {
   updateEducationHandler,
   deleteEducationHandler,
 } from "../controllers/education.controller";
+import { requireAuth } from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -21,14 +22,18 @@ const router = Router();
  *   post:
  *     summary: Create a new education entry
  *     tags: [Education]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Education created
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/", listEducation);
-router.post("/", createEducationHandler);
+router.post("/", requireAuth, createEducationHandler);
 
 /**
  * @openapi
@@ -50,6 +55,8 @@ router.post("/", createEducationHandler);
  *   put:
  *     summary: Update an education entry
  *     tags: [Education]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -59,9 +66,13 @@ router.post("/", createEducationHandler);
  *     responses:
  *       200:
  *         description: Education updated
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Delete an education entry
  *     tags: [Education]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -71,9 +82,11 @@ router.post("/", createEducationHandler);
  *     responses:
  *       200:
  *         description: Education deleted
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/:id", getEducation);
-router.put("/:id", updateEducationHandler);
-router.delete("/:id", deleteEducationHandler);
+router.put("/:id", requireAuth, updateEducationHandler);
+router.delete("/:id", requireAuth, deleteEducationHandler);
 
 export default router;

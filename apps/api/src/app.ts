@@ -6,6 +6,7 @@ import experienceRoutes from "./routes/experience.routes";
 import educationRoutes from "./routes/education.routes";
 import certificationsRoutes from "./routes/certifications.routes";
 import configRoutes from "./routes/config.routes";
+import authRoutes from "./routes/auth.routes";
 import { errorHandler } from "./middleware/errorHandler";
 import { sendError } from "./utils/response";
 import { healthCheckHandler } from "./controllers/health.controller";
@@ -29,6 +30,7 @@ app.use(helmet());
 app.use(express.json({ limit: "10kb" }));
 
 app.get("/health", healthCheckHandler);
+app.use("/auth", authRoutes);
 app.use("/projects", projectsRoutes);
 app.use("/about", aboutRoutes);
 app.use("/skills", skillsRoutes);
