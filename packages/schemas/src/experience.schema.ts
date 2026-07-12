@@ -9,9 +9,9 @@ export const experienceSchema = z.object({
   description: z.array(z.string()),
   location: z.string().min(1),
   skillIds: z.array(z.number()),
-});
+}).meta({ id: "Experience"});
 
-export const createExperienceSchema = experienceSchema.omit({ id: true });
+export const createExperienceSchema = experienceSchema.omit({ id: true }).meta({ id: "CreateExperienceInput"});
 
 export type Experience = z.infer<typeof experienceSchema>;
 export type CreateExperienceInput = z.infer<typeof createExperienceSchema>;

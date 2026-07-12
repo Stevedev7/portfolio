@@ -1,0 +1,30 @@
+{
+  "projects": [],
+  "workExperience": [],
+  "skills": [],
+  "education": [],
+  "certifications": [],
+  "about": {
+    "id": 1,
+    "name": "John Doe",
+    "title": "Full Stack Developer",
+    "summary": "I'm a passionate full stack developer.",
+    "bio": "With years of experience in both frontend and backend technologies, I love building scalable and maintainable applications. When not coding, I enjoy hiking and photography.",
+    "email": "johndoe@example.com",
+    "location": "San Francisco, United States",
+    "avatarUrl": "https://randomuser.me/api/portraits/men/1.jpg",
+    "socialLinks": {
+      "github": "https://github.com/johndoe",
+      "linkedin": "https://linkedin.com/in/johndoe"
+    }
+  },
+  "config": {
+    "id": 1,
+    "projects": true,
+    "workExperience": true,
+    "skills": true,
+    "education": true,
+    "certifications": true,
+    "about": true
+  }
+}

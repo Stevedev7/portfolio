@@ -4,7 +4,7 @@ import type { RootState } from "./store";
 import { clearToken } from "./authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3001",
+  baseUrl: import.meta.env.VITE_API_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
     if (token) {

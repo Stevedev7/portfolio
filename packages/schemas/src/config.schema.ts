@@ -8,6 +8,6 @@ export const configSchema = z.object({
   education: z.boolean(),
   certifications: z.boolean(),
   about: z.boolean(),
-});
+}).meta({ id: "Config"});
 
 export type Config = z.infer<typeof configSchema>;
