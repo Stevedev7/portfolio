@@ -1,5 +1,5 @@
 import { env } from "../config/env";
-import { experienceSchema, type Experience, type CreateExperienceInput } from "../schemas/experience.schema";
+import { experienceSchema, type Experience, type CreateExperienceInput } from "@portfolio/schemas";
 import { z } from "zod";
 
 export const getAllExperience = async (): Promise<Experience[]> => {

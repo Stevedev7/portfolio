@@ -7,7 +7,7 @@ import {
   deleteSkill,
   findSkillReferences,
 } from "../services/skills.service";
-import { createSkillSchema } from "../schemas/skill.schema";
+import { createSkillSchema } from "@portfolio/schemas";
 import logger from "../config/logger";
 import { sendSuccess, sendError } from "../utils/response";
 

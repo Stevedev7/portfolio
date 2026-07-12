@@ -6,7 +6,7 @@ import {
   updateEducation,
   deleteEducation,
 } from "../services/education.service";
-import { createEducationSchema } from "../schemas/education.schema";
+import { createEducationSchema } from "@portfolio/schemas";
 import logger from "../config/logger";
 import { sendSuccess, sendError } from "../utils/response";
 

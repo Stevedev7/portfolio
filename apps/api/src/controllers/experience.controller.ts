@@ -6,7 +6,7 @@ import {
   updateExperience,
   deleteExperience,
 } from "../services/experience.service";
-import { createExperienceSchema } from "../schemas/experience.schema";
+import { createExperienceSchema } from "@portfolio/schemas";
 import logger from "../config/logger";
 import { sendSuccess, sendError } from "../utils/response";
 

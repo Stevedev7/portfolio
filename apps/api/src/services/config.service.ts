@@ -1,5 +1,5 @@
 import { env } from "../config/env";
-import { configSchema, type Config } from "../schemas/config.schema";
+import { configSchema, type Config } from "@portfolio/schemas";
 
 export const getConfig = async (): Promise<Config> => {
   const response = await fetch(`${env.JSON_SERVER_URL}/config`);

@@ -1,0 +1,11 @@
+{
+  "name": "@portfolio/schemas",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
+}

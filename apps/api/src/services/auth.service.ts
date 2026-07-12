@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
-import type { LoginInput } from "../schemas/auth.schema";
+import type { LoginInput } from "@portfolio/schemas";
 
 export const verifyCredentials = async (input: LoginInput): Promise<boolean> => {
   if (input.username !== env.ADMIN_USERNAME) return false;

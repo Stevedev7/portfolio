@@ -1,8 +1,8 @@
 import { env } from "../config/env";
-import { projectSchema } from "../schemas/project.schema";
-import { skillSchema, type Skill, type CreateSkillInput } from "../schemas/skill.schema";
-import { experienceSchema } from "../schemas/experience.schema";
-import { certificationSchema } from "../schemas/certification.schema";
+import { projectSchema } from "@portfolio/schemas";
+import { skillSchema, type Skill, type CreateSkillInput } from "@portfolio/schemas";
+import { experienceSchema } from "@portfolio/schemas";
+import { certificationSchema } from "@portfolio/schemas";
 import { z } from "zod";
 
 export const getAllSkills = async (): Promise<Skill[]> => {

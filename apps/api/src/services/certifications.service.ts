@@ -1,5 +1,5 @@
 import { env } from "../config/env";
-import { certificationSchema, type Certification, type CreateCertificationInput } from "../schemas/certification.schema";
+import { certificationSchema, type Certification, type CreateCertificationInput } from "@portfolio/schemas";
 import { z } from "zod";
 
 export const getAllCertifications = async (): Promise<Certification[]> => {

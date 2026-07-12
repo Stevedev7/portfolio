@@ -6,7 +6,7 @@ import {
   updateProject,
   deleteProject,
 } from "../services/projects.service";
-import { createProjectSchema } from "../schemas/project.schema";
+import { createProjectSchema } from "@portfolio/schemas";
 import logger from "../config/logger";
 import { sendSuccess, sendError } from "../utils/response";
 

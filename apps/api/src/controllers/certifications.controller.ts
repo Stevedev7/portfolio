@@ -6,7 +6,7 @@ import {
   updateCertification,
   deleteCertification,
 } from "../services/certifications.service";
-import { createCertificationSchema } from "../schemas/certification.schema";
+import { createCertificationSchema } from "@portfolio/schemas";
 import logger from "../config/logger";
 import { sendSuccess, sendError } from "../utils/response";
 

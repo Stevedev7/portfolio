@@ -1,5 +1,5 @@
 import { env } from "../config/env";
-import { projectSchema, type Project, type CreateProjectInput } from "../schemas/project.schema";
+import { projectSchema, type Project, type CreateProjectInput } from "@portfolio/schemas";
 import { z } from "zod";
 
 export const getAllProjects = async (): Promise<Project[]> => {
