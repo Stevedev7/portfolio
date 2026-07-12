@@ -9,9 +9,9 @@ export const projectSchema = z.object({
   repoUrl: z.string().url().optional(),
   featured: z.boolean(),
   skillIds: z.array(z.number()),
-});
+}).meta({ id: "Project"});
 
-export const createProjectSchema = projectSchema.omit({ id: true });
+export const createProjectSchema = projectSchema.omit({ id: true }).meta({ id: "CreateProjectInput" });
 
 export type Project = z.infer<typeof projectSchema>;
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;

@@ -14,6 +14,6 @@ export const aboutSchema = z.object({
     linkedin: z.string().url().optional(),
     twitter: z.string().url().optional(),
   }),
-});
+}).meta({ id: "About"});
 
 export type About = z.infer<typeof aboutSchema>;
