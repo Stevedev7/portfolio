@@ -28,8 +28,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set short SHA
-        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Set short SHA and lowercase owner
+        run: |
+          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "OWNER_LC=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -50,5 +52,5 @@ jobs:
           build-args: |
             VITE_API_URL=${{ vars.VITE_API_URL }}
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/portfolio-${{ matrix.name }}:latest
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/portfolio-${{ matrix.name }}:${{ env.SHORT_SHA }}
+            ${{ env.REGISTRY }}/${{ env.OWNER_LC }}/portfolio-${{ matrix.name }}:latest
+            ${{ env.REGISTRY }}/${{ env.OWNER_LC }}/portfolio-${{ matrix.name }}:${{ env.SHORT_SHA }}
