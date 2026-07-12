@@ -19,9 +19,6 @@ jobs:
 
       - name: Ensure namespace exists
         run: kubectl apply -f k8s/namespace.yaml
-      - name: Debug secret length
-        run: |
-          echo "JWT_SECRET length: ${{ secrets.K8S_JWT_SECRET }}" | wc -c
 
       - name: Create or update API secret
         run: |
@@ -33,8 +30,10 @@ jobs:
             --from-literal=ALLOWED_ORIGINS='${{ vars.K8S_ALLOWED_ORIGINS }}' \
             --dry-run=client -o yaml | kubectl apply -f -
 
-      - name: Apply Kubernetes manifests
-        run: kubectl apply -f k8s/ --recursive
+      - name: Apply Kubernetes manifests (excluding secret)
+        run: |
+          # Apply all YAML files except secret.yaml
+          find k8s/ -type f -name "*.yaml" ! -name "secret.yaml" -exec kubectl apply -f {} \;
 
       - name: Restart deployments to pull latest images
         run: kubectl rollout restart deployment -n portfolio
