@@ -19,6 +19,9 @@ jobs:
 
       - name: Ensure namespace exists
         run: kubectl apply -f k8s/namespace.yaml
+      - name: Debug secret length
+        run: |
+          echo "JWT_SECRET length: ${{ secrets.K8S_JWT_SECRET }}" | wc -c
 
       - name: Create or update API secret
         run: |
