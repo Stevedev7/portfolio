@@ -1,0 +1,223 @@
+@baseUrl = http://localhost:3001
+
+### Health check
+GET {{baseUrl}}/health
+
+### Get all projects
+GET {{baseUrl}}/projects
+
+### Get project by id
+GET {{baseUrl}}/projects/1
+
+### Create project
+POST {{baseUrl}}/projects
+Content-Type: application/json
+
+{
+  "title": "Portfolio Platform",
+  "description": ["Full-stack monorepo project", "Self-hosted on Kubernetes"],
+  "imageUrl": "https://example.com/image.jpg",
+  "liveUrl": "https://example.com",
+  "repoUrl": "https://github.com/example/repo",
+  "featured": true,
+  "skillIds": [1]
+}
+
+### Update project
+PUT {{baseUrl}}/projects/1
+Content-Type: application/json
+
+{
+  "title": "Portfolio Platform",
+  "description": ["Full-stack monorepo project", "Self-hosted on Kubernetes", "CI/CD via GitHub Actions"],
+  "imageUrl": "https://example.com/image.jpg",
+  "liveUrl": "https://example.com",
+  "repoUrl": "https://github.com/example/repo",
+  "featured": true,
+  "skillIds": [1, 2]
+}
+
+### Delete project
+DELETE {{baseUrl}}/projects/1
+
+### Get about
+GET {{baseUrl}}/about
+
+### Update about
+PUT {{baseUrl}}/about
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Steve Pinto",
+  "title": "Software Engineer",
+  "summary": "I am an engineer",
+  "bio": "Longer bio text goes here",
+  "email": "steve@shbre.co.uk",
+  "location": "London, United Kingdom",
+  "avatarUrl": "https://example.com/avatar.jpg",
+  "socialLinks": {
+    "github": "https://github.com/Stevedev7",
+    "linkedin": "https://linkedin.com/in/stevedev7"
+  }
+}
+
+### Get all skills
+GET {{baseUrl}}/skills
+
+### Get skill by id
+GET {{baseUrl}}/skills/1
+
+### Create skill
+POST {{baseUrl}}/skills
+Content-Type: application/json
+
+{
+  "name": "TypeScript",
+  "category": "Backend",
+  "proficiency": "Advanced"
+}
+
+### Update skill
+PUT {{baseUrl}}/skills/1
+Content-Type: application/json
+
+{
+  "name": "TypeScript",
+  "category": "Backend",
+  "proficiency": "Expert"
+}
+
+### Delete skill
+DELETE {{baseUrl}}/skills/1
+
+### Get all experience
+GET {{baseUrl}}/experience
+
+### Get experience by id
+GET {{baseUrl}}/experience/1
+
+### Create experience
+POST {{baseUrl}}/experience
+Content-Type: application/json
+
+{
+  "company": "Example Corp",
+  "role": "Software Engineer",
+  "startDate": "2022-01-01",
+  "endDate": null,
+  "description": ["Built things", "Fixed things"],
+  "location": "Remote",
+  "skillIds": [1]
+}
+
+### Update experience
+PUT {{baseUrl}}/experience/1
+Content-Type: application/json
+
+{
+  "company": "Example Corp",
+  "role": "Senior Software Engineer",
+  "startDate": "2022-01-01",
+  "endDate": null,
+  "description": ["Built things", "Fixed things", "Led a team"],
+  "location": "Remote",
+  "skillIds": [1, 2]
+}
+
+### Delete experience
+DELETE {{baseUrl}}/experience/1
+
+### Get all education
+GET {{baseUrl}}/education
+
+### Get education by id
+GET {{baseUrl}}/education/1
+
+### Create education
+POST {{baseUrl}}/education
+Content-Type: application/json
+
+{
+  "institution": "Example University",
+  "degree": "Bachelor of Science",
+  "fieldOfStudy": "Computer Science",
+  "startDate": "2018-09-01",
+  "endDate": "2022-06-01"
+}
+
+### Update education
+PUT {{baseUrl}}/education/1
+Content-Type: application/json
+
+{
+  "institution": "Example University",
+  "degree": "Bachelor of Science",
+  "fieldOfStudy": "Computer Science and Engineering",
+  "startDate": "2018-09-01",
+  "endDate": "2022-06-01"
+}
+
+### Delete education
+DELETE {{baseUrl}}/education/1
+
+### Get all certifications
+GET {{baseUrl}}/certifications
+
+### Get certification by id
+GET {{baseUrl}}/certifications/1
+
+### Create certification
+POST {{baseUrl}}/certifications
+Content-Type: application/json
+
+{
+  "name": "Example Certification",
+  "issuingOrganization": "Example Org",
+  "issueDate": "2023-05-01",
+  "expiryDate": null,
+  "credentialUrl": "https://example.com/credential",
+  "skillIds": [1]
+}
+
+### Update certification
+PUT {{baseUrl}}/certifications/1
+Content-Type: application/json
+
+{
+  "name": "Example Certification",
+  "issuingOrganization": "Example Org",
+  "issueDate": "2023-05-01",
+  "expiryDate": "2026-05-01",
+  "credentialUrl": "https://example.com/credential",
+  "skillIds": [1, 2]
+}
+
+### Delete certification
+DELETE {{baseUrl}}/certifications/1
+
+### Get config
+GET {{baseUrl}}/config
+
+### Update config
+PUT {{baseUrl}}/config
+Content-Type: application/json
+
+{
+  "id": 1,
+  "projects": true,
+  "workExperience": true,
+  "skills": true,
+  "education": true,
+  "certifications": true,
+  "about": true
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "yourpassword"
+}
