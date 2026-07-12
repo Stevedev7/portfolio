@@ -29,15 +29,7 @@ jobs:
             --from-literal=JWT_SECRET='${{ secrets.K8S_JWT_SECRET }}' \
             --from-literal=ALLOWED_ORIGINS='${{ vars.K8S_ALLOWED_ORIGINS }}' \
             --dry-run=client -o yaml | kubectl apply -f -
-      - name: Create or update GHCR pull secret
-        run: |
-          kubectl create secret docker-registry ghcr-pull-secret \
-            --namespace=portfolio \
-            --docker-server=ghcr.io \
-            --docker-username=${{ github.actor }} \
-            --docker-password='${{ secrets.GHCR_PAT }}' \
-            --dry-run=client -o yaml | kubectl apply -f -
-            
+
       - name: Apply Kubernetes manifests
         run: kubectl apply -f k8s/ --recursive
 
