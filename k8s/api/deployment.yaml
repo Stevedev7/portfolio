@@ -4,8 +4,6 @@ metadata:
   name: api
   namespace: portfolio
 spec:
-  imagePullSecrets:
-    - name: ghcr-pull-secret
   replicas: 1
   selector:
     matchLabels:
@@ -15,6 +13,8 @@ spec:
       labels:
         app: api
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: api
           image: ghcr.io/stevedev7/portfolio-api:latest
