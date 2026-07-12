@@ -36,11 +36,11 @@ const About = () => {
     updateAbout(parsed.data);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
 
   return (
     <div>
-      <h1 className="mb-4 text-2xl font-semibold">About</h1>
+      <h1 className="mb-4 text-2xl font-semibold text-ink-900 dark:text-canvas-100">About</h1>
       <form onSubmit={handleSubmit} className="max-w-lg space-y-3">
         <Input placeholder="Name" value={values.name} onChange={(e) => handleChange("name", e.target.value)} />
         <Input placeholder="Title" value={values.title} onChange={(e) => handleChange("title", e.target.value)} />
@@ -60,8 +60,8 @@ const About = () => {
           onChange={(e) => handleChange("socialLinks", { ...values.socialLinks, linkedin: e.target.value })}
         />
 
-        {error && <p className="text-sm text-red-600">Failed to update</p>}
-        {isSuccess && <p className="text-sm text-green-600">Saved successfully</p>}
+        {error && <p className="text-sm text-primary-600 dark:text-primary-400">Failed to update</p>}
+        {isSuccess && <p className="text-sm text-green-600 dark:text-green-400">Saved successfully</p>}
 
         <Button type="submit" disabled={isSaving}>
           {isSaving ? "Saving..." : "Save"}

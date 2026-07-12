@@ -71,36 +71,38 @@ const Certifications = () => {
     await deleteCertification(id);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
 
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Certifications</h1>
+        <h1 className="text-2xl font-semibold text-ink-900 dark:text-canvas-100">Certifications</h1>
         <Button onClick={openCreateModal}>Add Certification</Button>
       </div>
 
-      <table className="w-full border-collapse text-left text-sm">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2">Name</th>
-            <th className="py-2">Issuing Organization</th>
-            <th className="py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.data.map((certification) => (
-            <tr key={certification.id} className="border-b">
-              <td className="py-2">{certification.name}</td>
-              <td className="py-2">{certification.issuingOrganization}</td>
-              <td className="py-2 space-x-2">
-                <Button variant="secondary" onClick={() => openEditModal(certification)}>Edit</Button>
-                <Button variant="danger" onClick={() => handleDelete(certification.id)}>Delete</Button>
-              </td>
+      <div className="overflow-x-auto rounded-lg border border-canvas-400 bg-white dark:border-ink-700 dark:bg-ink-800">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="border-b">
+              <th className="py-2">Name</th>
+              <th className="py-2">Issuing Organization</th>
+              <th className="py-2">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data?.data.map((certification) => (
+              <tr key={certification.id} className="border-b">
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{certification.name}</td>
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{certification.issuingOrganization}</td>
+                <td className="py-2 px-2 space-x-2">
+                  <Button variant="secondary" onClick={() => openEditModal(certification)}>Edit</Button>
+                  <Button variant="danger" onClick={() => handleDelete(certification.id)}>Delete</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit Certification" : "Add Certification"}>
         <form onSubmit={handleSubmit} className="space-y-3">

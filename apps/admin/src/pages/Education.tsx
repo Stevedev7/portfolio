@@ -65,38 +65,40 @@ const Education = () => {
     await deleteEducation(id);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
 
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Education</h1>
+        <h1 className="text-2xl font-semibold text-ink-900 dark:text-canvas-100">Education</h1>
         <Button onClick={openCreateModal}>Add Education</Button>
       </div>
 
-      <table className="w-full border-collapse text-left text-sm">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2">Institution</th>
-            <th className="py-2">Degree</th>
-            <th className="py-2">Field of Study</th>
-            <th className="py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.data.map((education) => (
-            <tr key={education.id} className="border-b">
-              <td className="py-2">{education.institution}</td>
-              <td className="py-2">{education.degree}</td>
-              <td className="py-2">{education.fieldOfStudy}</td>
-              <td className="py-2 space-x-2">
-                <Button variant="secondary" onClick={() => openEditModal(education)}>Edit</Button>
-                <Button variant="danger" onClick={() => handleDelete(education.id)}>Delete</Button>
-              </td>
+      <div className="overflow-x-auto rounded-lg border border-canvas-400 bg-white dark:border-ink-700 dark:bg-ink-800">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="border-b">
+              <th className="py-2">Institution</th>
+              <th className="py-2">Degree</th>
+              <th className="py-2">Field of Study</th>
+              <th className="py-2">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data?.data.map((education) => (
+              <tr key={education.id} className="border-b">
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{education.institution}</td>
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{education.degree}</td>
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{education.fieldOfStudy}</td>
+                <td className="py-2 px-2 space-x-2">
+                  <Button variant="secondary" onClick={() => openEditModal(education)}>Edit</Button>
+                  <Button variant="danger" onClick={() => handleDelete(education.id)}>Delete</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit Education" : "Add Education"}>
         <form onSubmit={handleSubmit} className="space-y-3">

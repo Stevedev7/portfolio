@@ -80,36 +80,38 @@ const Projects = () => {
     await deleteProject(id);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
 
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Projects</h1>
+        <h1 className="text-2xl font-semibold text-ink-900 dark:text-canvas-100">Projects</h1>
         <Button onClick={openCreateModal}>Add Project</Button>
       </div>
 
-      <table className="w-full border-collapse text-left text-sm">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2">Title</th>
-            <th className="py-2">Featured</th>
-            <th className="py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.data.map((project) => (
-            <tr key={project.id} className="border-b">
-              <td className="py-2">{project.title}</td>
-              <td className="py-2">{project.featured ? "Yes" : "No"}</td>
-              <td className="py-2 space-x-2">
-                <Button variant="secondary" onClick={() => openEditModal(project)}>Edit</Button>
-                <Button variant="danger" onClick={() => handleDelete(project.id)}>Delete</Button>
-              </td>
+      <div className="overflow-x-auto rounded-lg border border-canvas-400 bg-white dark:border-ink-700 dark:bg-ink-800">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="border-b">
+              <th className="py-2">Title</th>
+              <th className="py-2">Featured</th>
+              <th className="py-2">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data?.data.map((project) => (
+              <tr key={project.id} className="border-b">
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{project.title}</td>
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{project.featured ? "Yes" : "No"}</td>
+                <td className="py-2 px-2 space-x-2">
+                  <Button variant="secondary" onClick={() => openEditModal(project)}>Edit</Button>
+                  <Button variant="danger" onClick={() => handleDelete(project.id)}>Delete</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit Project" : "Add Project"}>
         <form onSubmit={handleSubmit} className="space-y-3">
@@ -118,13 +120,13 @@ const Projects = () => {
             placeholder="Description (one bullet per line)"
             value={descriptionText}
             onChange={(e) => setDescriptionText(e.target.value)}
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="w-full rounded border border-canvas-400 bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600 dark:border-ink-700 dark:bg-ink-800 dark:text-canvas-100"
             rows={4}
           />
           <Input placeholder="Image URL" value={values.imageUrl} onChange={(e) => handleChange("imageUrl", e.target.value)} />
           <Input placeholder="Live URL" value={values.liveUrl} onChange={(e) => handleChange("liveUrl", e.target.value)} />
           <Input placeholder="Repo URL" value={values.repoUrl} onChange={(e) => handleChange("repoUrl", e.target.value)} />
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex items-center gap-2 text-sm text-ink-900 dark:text-canvas-100">
             <input
               type="checkbox"
               checked={values.featured}

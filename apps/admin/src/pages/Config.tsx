@@ -43,14 +43,17 @@ const Config = () => {
     updateConfig(parsed.data);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
 
   return (
     <div>
-      <h1 className="mb-4 text-2xl font-semibold">Section Visibility</h1>
+      <h1 className="mb-4 text-2xl font-semibold text-ink-900 dark:text-canvas-100">Section Visibility</h1>
       <form onSubmit={handleSubmit} className="max-w-md space-y-3">
         {sections.map((section) => (
-          <label key={section.key} className="flex items-center justify-between rounded border px-3 py-2 text-sm">
+          <label
+            key={section.key}
+            className="flex items-center justify-between rounded border border-canvas-400 bg-white px-3 py-2 text-sm text-ink-900 dark:border-ink-700 dark:bg-ink-800 dark:text-canvas-100"
+          >
             {section.label}
             <input
               type="checkbox"
@@ -60,8 +63,8 @@ const Config = () => {
           </label>
         ))}
 
-        {error && <p className="text-sm text-red-600">Failed to update</p>}
-        {isSuccess && <p className="text-sm text-green-600">Saved successfully</p>}
+        {error && <p className="text-sm text-primary-600 dark:text-primary-400">Failed to update</p>}
+        {isSuccess && <p className="text-sm text-green-600 dark:text-green-400">Saved successfully</p>}
 
         <Button type="submit" disabled={isSaving} className="w-full">
           {isSaving ? "Saving..." : "Save"}

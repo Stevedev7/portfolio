@@ -80,38 +80,40 @@ const Experience = () => {
     await deleteExperience(id);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
 
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Experience</h1>
+        <h1 className="text-2xl font-semibold text-ink-900 dark:text-canvas-100">Experience</h1>
         <Button onClick={openCreateModal}>Add Experience</Button>
       </div>
 
-      <table className="w-full border-collapse text-left text-sm">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2">Company</th>
-            <th className="py-2">Role</th>
-            <th className="py-2">Location</th>
-            <th className="py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.data.map((experience) => (
-            <tr key={experience.id} className="border-b">
-              <td className="py-2">{experience.company}</td>
-              <td className="py-2">{experience.role}</td>
-              <td className="py-2">{experience.location}</td>
-              <td className="py-2 space-x-2">
-                <Button variant="secondary" onClick={() => openEditModal(experience)}>Edit</Button>
-                <Button variant="danger" onClick={() => handleDelete(experience.id)}>Delete</Button>
-              </td>
+      <div className="overflow-x-auto rounded-lg border border-canvas-400 bg-white dark:border-ink-700 dark:bg-ink-800">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="border-b">
+              <th className="py-2">Company</th>
+              <th className="py-2">Role</th>
+              <th className="py-2">Location</th>
+              <th className="py-2">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data?.data.map((experience) => (
+              <tr key={experience.id} className="border-b">
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{experience.company}</td>
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{experience.role}</td>
+                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{experience.location}</td>
+                <td className="py-2 px-2 space-x-2">
+                  <Button variant="secondary" onClick={() => openEditModal(experience)}>Edit</Button>
+                  <Button variant="danger" onClick={() => handleDelete(experience.id)}>Delete</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit Experience" : "Add Experience"}>
         <form onSubmit={handleSubmit} className="space-y-3">
@@ -120,7 +122,6 @@ const Experience = () => {
           <Input placeholder="Location" value={values.location} onChange={(e) => handleChange("location", e.target.value)} />
           <Input
             type="date"
-            placeholder="Start Date"
             value={values.startDate}
             onChange={(e) => handleChange("startDate", e.target.value)}
           />
@@ -134,7 +135,7 @@ const Experience = () => {
             placeholder="Description (one bullet per line)"
             value={descriptionText}
             onChange={(e) => setDescriptionText(e.target.value)}
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="w-full rounded border border-canvas-400 bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600 dark:border-ink-700 dark:bg-ink-800 dark:text-canvas-100"
             rows={4}
           />
           <MultiSelect
