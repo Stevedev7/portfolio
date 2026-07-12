@@ -4,6 +4,8 @@ metadata:
   name: admin
   namespace: portfolio
 spec:
+  imagePullSecrets:
+    - name: ghcr-pull-secret
   replicas: 1
   selector:
     matchLabels:
