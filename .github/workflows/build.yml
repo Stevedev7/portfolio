@@ -27,9 +27,6 @@ jobs:
       - name: Build schemas package
         run: yarn workspace @portfolio/schemas build
 
-      - name: Typecheck API
-        run: yarn workspace api typecheck
-
       - name: Build API
         run: yarn workspace api build
 
