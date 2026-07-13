@@ -13,6 +13,8 @@ spec:
       labels:
         app: admin
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: admin
           image: ghcr.io/stevedev7/portfolio-admin:latest

@@ -13,6 +13,8 @@ spec:
       labels:
         app: json-server
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: json-server
           image: ghcr.io/stevedev7/portfolio-json-server:latest
