@@ -10,6 +10,7 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    environment: divine-server
     permissions:
       contents: read
       packages: write

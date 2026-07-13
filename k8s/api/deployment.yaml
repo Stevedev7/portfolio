@@ -38,4 +38,3 @@ spec:
         - name: logs
           persistentVolumeClaim:
             claimName: api-logs
-
