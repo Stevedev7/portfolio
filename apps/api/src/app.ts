@@ -27,7 +27,18 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+app.use(helmet({
+  crossOriginResourcePolicy: {
+    policy: "cross-origin"
+  },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+    },
+  },
+}));
 app.use(express.json({ limit: "10kb" }));
 
 app.get("/health", healthCheckHandler);
