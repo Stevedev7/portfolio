@@ -24,6 +24,8 @@ jobs:
             dockerfile: docker/json-server/Dockerfile
           - name: admin
             dockerfile: docker/admin/Dockerfile
+          - name: web
+            dockerfile: docker/web/Dockerfile
 
     steps:
       - name: Checkout
