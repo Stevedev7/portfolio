@@ -31,3 +31,10 @@ spec:
           envFrom:
             - secretRef:
                 name: api-secrets
+          volumeMounts:
+            - name: logs
+              mountPath: /app/apps/api/logs
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: api-logs
