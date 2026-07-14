@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useForm, Button, Input, Modal, MultiSelect } from "@portfolio/ui";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2, Award } from "lucide-react";
+import { useForm, Button, Input, Modal, MultiSelect, Card, PageHeader, EmptyState } from "@portfolio/ui";
 import { createCertificationSchema, type Certification as CertificationType, type CreateCertificationInput } from "@portfolio/schemas";
 import {
   useGetCertificationsQuery,
@@ -50,82 +52,97 @@ const Certifications = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const parsed = createCertificationSchema.safeParse(values);
     if (!parsed.success) {
-      alert(parsed.error.issues.map((i) => i.message).join(", "));
+      toast.error(parsed.error.issues[0]?.message ?? "Invalid certification data");
       return;
     }
 
-    if (editingId) {
-      await updateCertification({ id: editingId, body: parsed.data });
-    } else {
-      await createCertification(parsed.data);
+    try {
+      if (editingId) {
+        await updateCertification({ id: editingId, body: parsed.data }).unwrap();
+        toast.success("Certification updated");
+      } else {
+        await createCertification(parsed.data).unwrap();
+        toast.success("Certification created");
+      }
+      setIsModalOpen(false);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
     }
-    setIsModalOpen(false);
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this certification?")) return;
-    await deleteCertification(id);
+    try {
+      await deleteCertification(id).unwrap();
+      toast.success("Certification deleted");
+    } catch {
+      toast.error("Could not delete this certification.");
+    }
   };
 
-  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
+  if (isLoading) return <p className="text-text-faint">Loading...</p>;
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-ink-900 dark:text-canvas-100">Certifications</h1>
-        <Button onClick={openCreateModal}>Add Certification</Button>
-      </div>
+      <PageHeader
+        eyebrow={`Content · ${data?.data.length ?? 0} entries`}
+        title="Certifications"
+        action={
+          <Button onClick={openCreateModal} className="flex items-center gap-1.5 w-fit px-4">
+            <Plus size={14} />
+            Add certification
+          </Button>
+        }
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-canvas-400 bg-white dark:border-ink-700 dark:bg-ink-800">
-        <table className="w-full border-collapse text-left text-sm">
-          <thead>
-            <tr className="border-b">
-              <th className="py-2">Name</th>
-              <th className="py-2">Issuing Organization</th>
-              <th className="py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.data.map((certification) => (
-              <tr key={certification.id} className="border-b">
-                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{certification.name}</td>
-                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{certification.issuingOrganization}</td>
-                <td className="py-2 px-2 space-x-2">
-                  <Button variant="secondary" onClick={() => openEditModal(certification)}>Edit</Button>
-                  <Button variant="danger" onClick={() => handleDelete(certification.id)}>Delete</Button>
-                </td>
+      {data?.data.length === 0 ? (
+        <Card>
+          <EmptyState icon={Award} title="No certifications yet" description="Add your first certification to get started." action={<Button onClick={openCreateModal} className="mt-2">Add certification</Button>} />
+        </Card>
+      ) : (
+        <Card className="overflow-x-auto">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Issuing organization</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {data?.data.map((certification) => (
+                <tr key={certification.id}>
+                  <td className="text-text">{certification.name}</td>
+                  <td className="text-text-muted">{certification.issuingOrganization}</td>
+                  <td>
+                    <div className="flex gap-1">
+                      <button onClick={() => openEditModal(certification)} className="rounded p-1.5 text-text-faint hover:bg-surface-alt hover:text-text" aria-label="Edit">
+                        <Pencil size={14} />
+                      </button>
+                      <button onClick={() => handleDelete(certification.id)} className="rounded p-1.5 text-text-faint hover:bg-primary-950 hover:text-primary-400" aria-label="Delete">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+      )}
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit Certification" : "Add Certification"}>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit certification" : "Add certification"}>
         <form onSubmit={handleSubmit} className="space-y-3">
           <Input placeholder="Name" value={values.name} onChange={(e) => handleChange("name", e.target.value)} />
-          <Input placeholder="Issuing Organization" value={values.issuingOrganization} onChange={(e) => handleChange("issuingOrganization", e.target.value)} />
-          <Input
-            type="date"
-            value={values.issueDate}
-            onChange={(e) => handleChange("issueDate", e.target.value)}
-          />
-          <Input
-            type="date"
-            placeholder="Expiry Date (leave blank if none)"
-            value={values.expiryDate ?? ""}
-            onChange={(e) => handleChange("expiryDate", e.target.value || null)}
-          />
+          <Input placeholder="Issuing organization" value={values.issuingOrganization} onChange={(e) => handleChange("issuingOrganization", e.target.value)} />
+          <Input type="date" value={values.issueDate} onChange={(e) => handleChange("issueDate", e.target.value)} />
+          <Input type="date" placeholder="Expiry date (leave blank if none)" value={values.expiryDate ?? ""} onChange={(e) => handleChange("expiryDate", e.target.value || null)} />
           <Input placeholder="Credential URL" value={values.credentialUrl} onChange={(e) => handleChange("credentialUrl", e.target.value)} />
-          <MultiSelect
-            label="Skills"
-            options={skillOptions}
-            selectedIds={values.skillIds}
-            onChange={(ids) => handleChange("skillIds", ids)}
-          />
+          <MultiSelect label="Skills" options={skillOptions} selectedIds={values.skillIds} onChange={(ids) => handleChange("skillIds", ids)} />
           <Button type="submit" className="w-full">{editingId ? "Update" : "Create"}</Button>
         </form>
       </Modal>

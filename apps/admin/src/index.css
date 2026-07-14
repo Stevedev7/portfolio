@@ -1,38 +1,22 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
-@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-ink-50: #F5F5F5;
-  --color-ink-100: #E8E8E8;
-  --color-ink-200: #D1D1D1;
-  --color-ink-300: #B0B0B0;
-  --color-ink-400: #888888;
-  --color-ink-500: #606060;
-  --color-ink-600: #454545;
-  --color-ink-700: #2E2E2E;
-  --color-ink-800: #202020;
-  --color-ink-900: #151515;
-  --color-ink-950: #0A0A0A;
+  --color-base: #151515;
+  --color-surface: #1A1A1A;
+  --color-surface-alt: #101010;
+  --color-border: #262626;
+  --color-border-subtle: #1E1E1E;
+  --color-text: #EEEEEE;
+  --color-text-muted: #888888;
+  --color-text-faint: #606060;
 
   --color-primary-50: #FDF2F4;
   --color-primary-100: #FCE4E8;
-  --color-primary-200: #F9C9D2;
-  --color-primary-300: #F0A0B3;
   --color-primary-400: #DE6883;
   --color-primary-500: #C73659;
   --color-primary-600: #A91D3A;
   --color-primary-700: #8A1730;
-  --color-primary-800: #6D1226;
-  --color-primary-900: #591020;
-  --color-primary-950: #330912;
-
-  --color-canvas-50: #FAFAFA;
-  --color-canvas-100: #F4F4F4;
-  --color-canvas-200: #EEEEEE;
-  --color-canvas-300: #DCDCDC;
-  --color-canvas-400: #C4C4C4;
-  --color-canvas-500: #A8A8A8;
 
   --font-sans: "Inter", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
@@ -40,50 +24,31 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-canvas-200);
-  color: var(--color-ink-900);
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.dark body {
-  background-color: var(--color-ink-950);
-  color: var(--color-canvas-100);
+  background-color: var(--color-base);
+  color: var(--color-text);
 }
 
 table thead th {
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 0.7rem;
-  color: var(--color-ink-500);
-  border-bottom: 1px solid var(--color-canvas-400);
-  padding: 0.75rem 0.5rem;
+  font-size: 0.65rem;
+  color: var(--color-text-faint);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.75rem 1rem;
   text-align: left;
   white-space: nowrap;
 }
 
-.dark table thead th {
-  color: var(--color-ink-300);
-  border-bottom-color: var(--color-ink-700);
-}
-
 table tbody tr {
-  border-bottom: 1px solid var(--color-canvas-300);
-}
-
-.dark table tbody tr {
-  border-bottom-color: var(--color-ink-800);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 table tbody tr:hover {
-  background-color: var(--color-canvas-100);
-}
-
-.dark table tbody tr:hover {
-  background-color: var(--color-ink-800);
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 table tbody td {
-  padding: 0.75rem 0.5rem;
+  padding: 0.8rem 1rem;
   white-space: nowrap;
 }

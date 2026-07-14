@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useForm, Button } from "@portfolio/ui";
+import { toast } from "sonner";
+import { useForm, Button, PageHeader, Card } from "@portfolio/ui";
 import { configSchema, type Config as ConfigType } from "@portfolio/schemas";
 import { useGetConfigQuery, useUpdateConfigMutation } from "../store/configApi";
 
@@ -16,7 +17,7 @@ const emptyConfig: ConfigType = {
 const sections: { key: keyof Omit<ConfigType, "id">; label: string }[] = [
   { key: "about", label: "About" },
   { key: "skills", label: "Skills" },
-  { key: "workExperience", label: "Work Experience" },
+  { key: "workExperience", label: "Work experience" },
   { key: "education", label: "Education" },
   { key: "projects", label: "Projects" },
   { key: "certifications", label: "Certifications" },
@@ -24,7 +25,7 @@ const sections: { key: keyof Omit<ConfigType, "id">; label: string }[] = [
 
 const Config = () => {
   const { data, isLoading } = useGetConfigQuery();
-  const [updateConfig, { isLoading: isSaving, isSuccess, error }] = useUpdateConfigMutation();
+  const [updateConfig, { isLoading: isSaving }] = useUpdateConfigMutation();
   const { values, handleChange, setValues } = useForm<ConfigType>(emptyConfig);
 
   useEffect(() => {
@@ -33,43 +34,46 @@ const Config = () => {
     }
   }, [data, setValues]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const parsed = configSchema.safeParse(values);
     if (!parsed.success) {
-      alert(parsed.error.issues.map((i) => i.message).join(", "));
+      toast.error(parsed.error.issues[0]?.message ?? "Invalid config data");
       return;
     }
-    updateConfig(parsed.data);
+    try {
+      await updateConfig(parsed.data).unwrap();
+      toast.success("Config updated");
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    }
   };
 
-  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
+  if (isLoading) return <p className="text-text-faint">Loading...</p>;
 
   return (
     <div>
-      <h1 className="mb-4 text-2xl font-semibold text-ink-900 dark:text-canvas-100">Section Visibility</h1>
-      <form onSubmit={handleSubmit} className="max-w-md space-y-3">
-        {sections.map((section) => (
-          <label
-            key={section.key}
-            className="flex items-center justify-between rounded border border-canvas-400 bg-white px-3 py-2 text-sm text-ink-900 dark:border-ink-700 dark:bg-ink-800 dark:text-canvas-100"
-          >
-            {section.label}
-            <input
-              type="checkbox"
-              checked={values[section.key]}
-              onChange={(e) => handleChange(section.key, e.target.checked)}
-            />
-          </label>
-        ))}
-
-        {error && <p className="text-sm text-primary-600 dark:text-primary-400">Failed to update</p>}
-        {isSuccess && <p className="text-sm text-green-600 dark:text-green-400">Saved successfully</p>}
-
-        <Button type="submit" disabled={isSaving} className="w-full">
-          {isSaving ? "Saving..." : "Save"}
-        </Button>
-      </form>
+      <PageHeader eyebrow="Settings" title="Section visibility" />
+      <Card className="max-w-md p-6">
+        <form onSubmit={handleSubmit} className="space-y-2">
+          {sections.map((section) => (
+            <label
+              key={section.key}
+              className="flex items-center justify-between rounded-md border border-border bg-surface-alt px-3 py-2.5 text-sm text-text"
+            >
+              {section.label}
+              <input
+                type="checkbox"
+                checked={values[section.key]}
+                onChange={(e) => handleChange(section.key, e.target.checked)}
+              />
+            </label>
+          ))}
+          <Button type="submit" disabled={isSaving} className="mt-2 w-full">
+            {isSaving ? "Saving..." : "Save"}
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 };

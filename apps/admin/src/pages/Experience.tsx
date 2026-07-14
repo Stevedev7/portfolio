@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useForm, Button, Input, Modal, MultiSelect } from "@portfolio/ui";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2, Briefcase } from "lucide-react";
+import { useForm, Button, Input, Modal, MultiSelect, Card, PageHeader, EmptyState } from "@portfolio/ui";
 import { createExperienceSchema, type Experience as ExperienceType, type CreateExperienceInput } from "@portfolio/schemas";
 import {
   useGetExperienceQuery,
@@ -55,7 +57,7 @@ const Experience = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const payload = {
       ...values,
@@ -63,87 +65,102 @@ const Experience = () => {
     };
     const parsed = createExperienceSchema.safeParse(payload);
     if (!parsed.success) {
-      alert(parsed.error.issues.map((i) => i.message).join(", "));
+      toast.error(parsed.error.issues[0]?.message ?? "Invalid experience data");
       return;
     }
 
-    if (editingId) {
-      await updateExperience({ id: editingId, body: parsed.data });
-    } else {
-      await createExperience(parsed.data);
+    try {
+      if (editingId) {
+        await updateExperience({ id: editingId, body: parsed.data }).unwrap();
+        toast.success("Experience updated");
+      } else {
+        await createExperience(parsed.data).unwrap();
+        toast.success("Experience created");
+      }
+      setIsModalOpen(false);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
     }
-    setIsModalOpen(false);
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this experience entry?")) return;
-    await deleteExperience(id);
+    try {
+      await deleteExperience(id).unwrap();
+      toast.success("Experience deleted");
+    } catch {
+      toast.error("Could not delete this entry.");
+    }
   };
 
-  if (isLoading) return <p className="text-ink-900 dark:text-canvas-100">Loading...</p>;
+  if (isLoading) return <p className="text-text-faint">Loading...</p>;
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-ink-900 dark:text-canvas-100">Experience</h1>
-        <Button onClick={openCreateModal}>Add Experience</Button>
-      </div>
+      <PageHeader
+        eyebrow={`Content · ${data?.data.length ?? 0} entries`}
+        title="Experience"
+        action={
+          <Button onClick={openCreateModal} className="flex items-center gap-1.5 w-fit px-4">
+            <Plus size={14} />
+            Add experience
+          </Button>
+        }
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-canvas-400 bg-white dark:border-ink-700 dark:bg-ink-800">
-        <table className="w-full border-collapse text-left text-sm">
-          <thead>
-            <tr className="border-b">
-              <th className="py-2">Company</th>
-              <th className="py-2">Role</th>
-              <th className="py-2">Location</th>
-              <th className="py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.data.map((experience) => (
-              <tr key={experience.id} className="border-b">
-                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{experience.company}</td>
-                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{experience.role}</td>
-                <td className="py-2 px-2 text-ink-900 dark:text-canvas-100">{experience.location}</td>
-                <td className="py-2 px-2 space-x-2">
-                  <Button variant="secondary" onClick={() => openEditModal(experience)}>Edit</Button>
-                  <Button variant="danger" onClick={() => handleDelete(experience.id)}>Delete</Button>
-                </td>
+      {data?.data.length === 0 ? (
+        <Card>
+          <EmptyState icon={Briefcase} title="No experience yet" description="Add your first role to get started." action={<Button onClick={openCreateModal} className="mt-2">Add experience</Button>} />
+        </Card>
+      ) : (
+        <Card className="overflow-x-auto">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Location</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {data?.data.map((experience) => (
+                <tr key={experience.id}>
+                  <td className="text-text">{experience.company}</td>
+                  <td className="text-text-muted">{experience.role}</td>
+                  <td className="text-text-muted">{experience.location}</td>
+                  <td>
+                    <div className="flex gap-1">
+                      <button onClick={() => openEditModal(experience)} className="rounded p-1.5 text-text-faint hover:bg-surface-alt hover:text-text" aria-label="Edit">
+                        <Pencil size={14} />
+                      </button>
+                      <button onClick={() => handleDelete(experience.id)} className="rounded p-1.5 text-text-faint hover:bg-primary-950 hover:text-primary-400" aria-label="Delete">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+      )}
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit Experience" : "Add Experience"}>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit experience" : "Add experience"}>
         <form onSubmit={handleSubmit} className="space-y-3">
           <Input placeholder="Company" value={values.company} onChange={(e) => handleChange("company", e.target.value)} />
           <Input placeholder="Role" value={values.role} onChange={(e) => handleChange("role", e.target.value)} />
           <Input placeholder="Location" value={values.location} onChange={(e) => handleChange("location", e.target.value)} />
-          <Input
-            type="date"
-            value={values.startDate}
-            onChange={(e) => handleChange("startDate", e.target.value)}
-          />
-          <Input
-            type="date"
-            placeholder="End Date (leave blank if present)"
-            value={values.endDate ?? ""}
-            onChange={(e) => handleChange("endDate", e.target.value || null)}
-          />
+          <Input type="date" value={values.startDate} onChange={(e) => handleChange("startDate", e.target.value)} />
+          <Input type="date" placeholder="End date (leave blank if present)" value={values.endDate ?? ""} onChange={(e) => handleChange("endDate", e.target.value || null)} />
           <textarea
             placeholder="Description (one bullet per line)"
             value={descriptionText}
             onChange={(e) => setDescriptionText(e.target.value)}
-            className="w-full rounded border border-canvas-400 bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600 dark:border-ink-700 dark:bg-ink-800 dark:text-canvas-100"
+            className="w-full rounded-md border border-border bg-surface-alt px-3 py-2 text-sm text-text placeholder:text-text-faint focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
             rows={4}
           />
-          <MultiSelect
-            label="Skills"
-            options={skillOptions}
-            selectedIds={values.skillIds}
-            onChange={(ids) => handleChange("skillIds", ids)}
-          />
+          <MultiSelect label="Skills" options={skillOptions} selectedIds={values.skillIds} onChange={(ids) => handleChange("skillIds", ids)} />
           <Button type="submit" className="w-full">{editingId ? "Update" : "Create"}</Button>
         </form>
       </Modal>

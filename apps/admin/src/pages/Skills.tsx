@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useForm, Button, Input, Modal } from "@portfolio/ui";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2 } from "lucide-react";
+import { useForm, Button, Input, Modal, Card, PageHeader, Badge, EmptyState } from "@portfolio/ui";
 import { createSkillSchema, type Skill, type CreateSkillInput } from "@portfolio/schemas";
 import {
   useGetSkillsQuery,
@@ -7,6 +9,7 @@ import {
   useUpdateSkillMutation,
   useDeleteSkillMutation,
 } from "../store/skillsApi";
+import { Sparkles } from "lucide-react";
 
 const emptySkill: CreateSkillInput = { name: "", category: "", proficiency: "" };
 
@@ -32,64 +35,101 @@ const Skills = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const parsed = createSkillSchema.safeParse(values);
     if (!parsed.success) {
-      alert(parsed.error.issues.map((i) => i.message).join(", "));
+      toast.error(parsed.error.issues[0]?.message ?? "Invalid skill data");
       return;
     }
 
-    if (editingId) {
-      await updateSkill({ id: editingId, body: parsed.data });
-    } else {
-      await createSkill(parsed.data);
+    try {
+      if (editingId) {
+        await updateSkill({ id: editingId, body: parsed.data }).unwrap();
+        toast.success("Skill updated");
+      } else {
+        await createSkill(parsed.data).unwrap();
+        toast.success("Skill created");
+      }
+      setIsModalOpen(false);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
     }
-    setIsModalOpen(false);
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this skill?")) return;
-    const result = await deleteSkill(id);
-    if ("error" in result) {
-      alert("Could not delete — this skill may still be referenced elsewhere.");
+    try {
+      await deleteSkill(id).unwrap();
+      toast.success("Skill deleted");
+    } catch (err) {
+      const message =
+        err && typeof err === "object" && "data" in err
+          ? (err.data as { message?: string })?.message
+          : undefined;
+      toast.error(message ?? "Could not delete this skill.");
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="text-text-faint">Loading...</p>;
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Skills</h1>
-        <Button onClick={openCreateModal}>Add Skill</Button>
-      </div>
+      <PageHeader
+        eyebrow={`Content · ${data?.data.length ?? 0} entries`}
+        title="Skills"
+        action={
+          <Button onClick={openCreateModal} className="flex items-center gap-1.5 w-fit px-4">
+            <Plus size={14} />
+            Add skill
+          </Button>
+        }
+      />
 
-      <table className="w-full border-collapse text-left text-sm">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2">Name</th>
-            <th className="py-2">Category</th>
-            <th className="py-2">Proficiency</th>
-            <th className="py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.data.map((skill) => (
-            <tr key={skill.id} className="border-b">
-              <td className="py-2">{skill.name}</td>
-              <td className="py-2">{skill.category}</td>
-              <td className="py-2">{skill.proficiency}</td>
-              <td className="py-2 space-x-2">
-                <Button variant="secondary" onClick={() => openEditModal(skill)}>Edit</Button>
-                <Button variant="danger" onClick={() => handleDelete(skill.id)}>Delete</Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {data?.data.length === 0 ? (
+        <Card>
+          <EmptyState
+            icon={Sparkles}
+            title="No skills yet"
+            description="Add your first skill to get started."
+            action={<Button onClick={openCreateModal} className="mt-2">Add skill</Button>}
+          />
+        </Card>
+      ) : (
+        <Card className="overflow-x-auto">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Proficiency</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.data.map((skill) => (
+                <tr key={skill.id}>
+                  <td className="text-text">{skill.name}</td>
+                  <td><Badge>{skill.category}</Badge></td>
+                  <td className="text-text-muted">{skill.proficiency}</td>
+                  <td>
+                    <div className="flex gap-1">
+                      <button onClick={() => openEditModal(skill)} className="rounded p-1.5 text-text-faint hover:bg-surface-alt hover:text-text" aria-label="Edit">
+                        <Pencil size={14} />
+                      </button>
+                      <button onClick={() => handleDelete(skill.id)} className="rounded p-1.5 text-text-faint hover:bg-primary-950 hover:text-primary-400" aria-label="Delete">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+      )}
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit Skill" : "Add Skill"}>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingId ? "Edit skill" : "Add skill"}>
         <form onSubmit={handleSubmit} className="space-y-3">
           <Input placeholder="Name" value={values.name} onChange={(e) => handleChange("name", e.target.value)} />
           <Input placeholder="Category" value={values.category} onChange={(e) => handleChange("category", e.target.value)} />

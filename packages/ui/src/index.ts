@@ -8,4 +8,4 @@ export * from "./components/PageHeader";
 export * from "./components/EmptyState";
 export * from "./components/StatCard";
 export * from "./components/Badge";
-export * from "./components/ThemeToggle";
+export * from "./lib/cn";
