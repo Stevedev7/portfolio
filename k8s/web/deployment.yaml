@@ -24,3 +24,6 @@ spec:
           env:
             - name: API_URL
               value: "http://api.portfolio.svc.cluster.local:3001"
+            - name: SITE_URL
+              value: "https://stevedev7.qzz.io"
+

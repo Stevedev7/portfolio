@@ -1,7 +1,13 @@
 import { fetchFromApi } from "@/lib/api";
 import type { About } from "@portfolio/schemas";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Contact — Steve Pinto",
+  description: "Get in touch.",
+};
 
 const Contact = async () => {
   const about = await fetchFromApi<About>("/about");

@@ -1,7 +1,21 @@
+import type { Metadata } from "next";
 import { fetchFromApi } from "@/lib/api";
 import type { About, Skill } from "@portfolio/schemas";
 
 export const dynamic = "force-dynamic";
+
+export const generateMetadata = async (): Promise<Metadata> => {
+  const about = await fetchFromApi<About>("/about");
+  return {
+    title: `${about.name} — ${about.title}`,
+    description: about.summary,
+    openGraph: {
+      title: `${about.name} — ${about.title}`,
+      description: about.summary,
+      images: about.avatarUrl ? [about.avatarUrl] : [],
+    },
+  };
+};
 
 const Home = async () => {
   const [about, skills] = await Promise.all([
@@ -51,6 +65,21 @@ const Home = async () => {
           className="h-36 w-36 shrink-0 rounded-full border border-ink-800 object-cover"
         />
       )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: about.name,
+            jobTitle: about.title,
+            email: about.email,
+            address: about.location,
+            url: process.env.SITE_URL,
+            sameAs: Object.values(about.socialLinks).filter(Boolean),
+          }),
+        }}
+      />
     </main>
   );
 };

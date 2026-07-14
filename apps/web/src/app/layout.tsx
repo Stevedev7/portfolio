@@ -2,11 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 
-export const metadata: Metadata = {
-  title: "Steve Pinto — Full-Stack Engineer",
-  description: "Full-stack engineer building self-hosted software, end to end.",
-};
-
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">

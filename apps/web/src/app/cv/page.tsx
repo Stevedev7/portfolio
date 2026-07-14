@@ -1,7 +1,13 @@
 import { fetchFromApi } from "@/lib/api";
 import type { Experience, Education, Certification } from "@portfolio/schemas";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "CV — Steve Pinto",
+  description: "Work experience, education, and certifications.",
+};
 
 const CV = async () => {
   const [experience, education, certifications] = await Promise.all([
