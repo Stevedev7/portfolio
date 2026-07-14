@@ -1,6 +1,8 @@
 import { fetchFromApi } from "@/lib/api";
 import type { About, Skill } from "@portfolio/schemas";
 
+export const dynamic = "force-dynamic";
+
 const Home = async () => {
   const [about, skills] = await Promise.all([
     fetchFromApi<About>("/about"),
