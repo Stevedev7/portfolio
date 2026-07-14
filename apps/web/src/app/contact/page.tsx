@@ -1,6 +1,8 @@
 import { fetchFromApi } from "@/lib/api";
 import type { About } from "@portfolio/schemas";
 
+export const dynamic = "force-dynamic";
+
 const Contact = async () => {
   const about = await fetchFromApi<About>("/about");
 
