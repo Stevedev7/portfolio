@@ -7,11 +7,13 @@ interface StatCardProps {
 }
 
 export const StatCard = ({ icon: Icon, label, value }: StatCardProps) => (
-  <div className="rounded-lg border border-canvas-400 bg-white p-5 dark:border-ink-700 dark:bg-ink-800">
-    <div className="mb-3 flex items-center justify-between">
-      <p className="font-mono text-xs uppercase tracking-wide text-ink-500 dark:text-ink-300">{label}</p>
-      <Icon size={16} className="text-primary-600 dark:text-primary-400" />
+  <div className="rounded-xl border border-border bg-surface p-4">
+    <div className="mb-5 flex items-center justify-between">
+      <p className="font-mono text-[10px] uppercase tracking-wide text-text-faint">{label}</p>
+      <div className="rounded-md bg-primary-950 p-1.5">
+        <Icon size={13} className="text-primary-400" />
+      </div>
     </div>
-    <p className="text-3xl font-semibold text-ink-900 dark:text-canvas-100">{value}</p>
+    <p className="text-2xl font-semibold text-text">{value}</p>
   </div>
 );
