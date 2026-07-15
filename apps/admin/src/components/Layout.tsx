@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Menu, X, LayoutDashboard, User, Sparkles, Briefcase, GraduationCap, FolderGit2, Award, Settings, LogOut } from "lucide-react";
+import { Menu, X, LayoutDashboard, User, Sparkles, Briefcase, GraduationCap, FolderGit2, Award, Settings, LogOut, FolderOpen } from "lucide-react";
 import { clearToken } from "../store/authSlice";
 
 const navItems = [
@@ -13,6 +13,7 @@ const navItems = [
   { to: "/projects", label: "Projects", icon: FolderGit2 },
   { to: "/certifications", label: "Certifications", icon: Award },
   { to: "/config", label: "Config", icon: Settings },
+  { to: "/files", label: "Files", icon: FolderOpen },
 ];
 
 const Layout = () => {
@@ -42,8 +43,7 @@ const Layout = () => {
             end={item.end}
             onClick={() => setIsSidebarOpen(false)}
             className={({ isActive }) =>
-              `flex items-center gap-2.5 rounded-md px-2.5 py-2 text-[13px] transition-colors ${
-                isActive ? "bg-primary-600 text-white" : "text-text-muted hover:bg-surface hover:text-text"
+              `flex items-center gap-2.5 rounded-md px-2.5 py-2 text-[13px] transition-colors ${isActive ? "bg-primary-600 text-white" : "text-text-muted hover:bg-surface hover:text-text"
               }`
             }
           >

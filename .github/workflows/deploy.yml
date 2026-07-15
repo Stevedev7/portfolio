@@ -28,6 +28,16 @@ jobs:
             --from-literal=ADMIN_PASSWORD_HASH='${{ secrets.K8S_ADMIN_PASSWORD_HASH }}' \
             --from-literal=JWT_SECRET='${{ secrets.K8S_JWT_SECRET }}' \
             --from-literal=ALLOWED_ORIGINS='${{ vars.K8S_ALLOWED_ORIGINS }}' \
+            --from-literal=MINIO_ACCESS_KEY='${{ vars.MINIO_ACCESS_KEY }}' \
+            --from-literal=MINIO_SECRET_KEY='${{ secrets.MINIO_SECRET_KEY }}' \
+            --dry-run=client -o yaml | kubectl apply -f -
+      - name: Create or update API config
+        run: |
+          kubectl create configmap api-config \
+            --namespace=portfolio \
+            --from-literal=MINIO_ENDPOINT='${{ vars.MINIO_ENDPOINT }}' \
+            --from-literal=MINIO_BUCKET='${{ vars.MINIO_BUCKET }}' \
+            --from-literal=MINIO_PUBLIC_URL='${{ vars.MINIO_PUBLIC_URL }}' \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Apply Kubernetes manifests (excluding secret)

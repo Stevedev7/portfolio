@@ -10,6 +10,7 @@ import Certifications from "./pages/Certifications";
 import Config from "./pages/Config";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Files from "./pages/Files";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/config" element={<Config />} />
+          <Route path="/files" element={<Files />} />
         </Route>
       </Routes>
     </BrowserRouter>

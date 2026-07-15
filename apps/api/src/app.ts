@@ -7,6 +7,7 @@ import educationRoutes from "./routes/education.routes";
 import certificationsRoutes from "./routes/certifications.routes";
 import configRoutes from "./routes/config.routes";
 import authRoutes from "./routes/auth.routes";
+import filesRoutes from "./routes/files.routes";
 import { errorHandler } from "./middleware/errorHandler";
 import { sendError } from "./utils/response";
 import { healthCheckHandler } from "./controllers/health.controller";
@@ -51,6 +52,7 @@ app.use("/education", educationRoutes);
 app.use("/certifications", certificationsRoutes);
 app.use("/config", configRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));
+app.use("/files", filesRoutes);
 
 app.use((_req, res) => {
   sendError(res, "Route not found", 404);

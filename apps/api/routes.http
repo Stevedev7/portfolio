@@ -221,3 +221,12 @@ Content-Type: application/json
   "username": "admin",
   "password": "yourpassword"
 }
+
+### Upload file
+POST {{baseUrl}}/files
+Authorization: Bearer YOUR_TOKEN
+Content-Type: multipart/form-data
+
+### List files
+GET {{baseUrl}}/files
+Authorization: Bearer YOUR_TOKEN

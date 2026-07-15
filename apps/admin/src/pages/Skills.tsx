@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Sparkles, Upload } from "lucide-react";
 import { useForm, Button, Input, Modal, Card, PageHeader, Badge, EmptyState } from "@portfolio/ui";
 import { createSkillSchema, type Skill, type CreateSkillInput } from "@portfolio/schemas";
 import {
@@ -9,15 +9,16 @@ import {
   useUpdateSkillMutation,
   useDeleteSkillMutation,
 } from "../store/skillsApi";
-import { Sparkles } from "lucide-react";
+import { useUploadFileMutation } from "../store/filesApi";
 
-const emptySkill: CreateSkillInput = { name: "", category: "", proficiency: "" };
+const emptySkill: CreateSkillInput = { name: "", category: "", proficiency: "", iconUrl: "" };
 
 const Skills = () => {
   const { data, isLoading } = useGetSkillsQuery();
   const [createSkill] = useCreateSkillMutation();
   const [updateSkill] = useUpdateSkillMutation();
   const [deleteSkill] = useDeleteSkillMutation();
+  const [uploadFile, { isLoading: isUploadingIcon }] = useUploadFileMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -31,11 +32,23 @@ const Skills = () => {
 
   const openEditModal = (skill: Skill) => {
     setEditingId(skill.id);
-    setValues({ name: skill.name, category: skill.category, proficiency: skill.proficiency ?? "" });
+    setValues({ name: skill.name, category: skill.category, proficiency: skill.proficiency ?? "", iconUrl: skill.iconUrl ?? "" });
     setIsModalOpen(true);
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleIconUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const result = await uploadFile(formData).unwrap();
+      handleChange("iconUrl", result.data.url);
+      toast.success("Icon uploaded");
+    } catch {
+      toast.error("Icon upload failed");
+    }
+  };
+
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const parsed = createSkillSchema.safeParse(values);
     if (!parsed.success) {
@@ -79,7 +92,7 @@ const Skills = () => {
         eyebrow={`Content · ${data?.data.length ?? 0} entries`}
         title="Skills"
         action={
-          <Button onClick={openCreateModal} className="flex items-center gap-1.5 w-fit px-4">
+          <Button onClick={openCreateModal} className="flex items-center gap-1.5">
             <Plus size={14} />
             Add skill
           </Button>
@@ -100,6 +113,7 @@ const Skills = () => {
           <table className="w-full border-collapse text-left text-sm">
             <thead>
               <tr>
+                <th></th>
                 <th>Name</th>
                 <th>Category</th>
                 <th>Proficiency</th>
@@ -109,6 +123,13 @@ const Skills = () => {
             <tbody>
               {data?.data.map((skill) => (
                 <tr key={skill.id}>
+                  <td className="w-8">
+                    {skill.iconUrl ? (
+                      <img src={skill.iconUrl} alt="" className="h-5 w-5 object-contain" />
+                    ) : (
+                      <div className="h-5 w-5 rounded bg-surface-alt" />
+                    )}
+                  </td>
                   <td className="text-text">{skill.name}</td>
                   <td><Badge>{skill.category}</Badge></td>
                   <td className="text-text-muted">{skill.proficiency}</td>
@@ -134,6 +155,32 @@ const Skills = () => {
           <Input placeholder="Name" value={values.name} onChange={(e) => handleChange("name", e.target.value)} />
           <Input placeholder="Category" value={values.category} onChange={(e) => handleChange("category", e.target.value)} />
           <Input placeholder="Proficiency" value={values.proficiency} onChange={(e) => handleChange("proficiency", e.target.value)} />
+
+          <div>
+            <p className="mb-1 font-mono text-[10px] uppercase tracking-wide text-text-faint">Icon</p>
+            <div className="flex items-center gap-2">
+              {values.iconUrl ? (
+                <img src={values.iconUrl} alt="" className="h-8 w-8 rounded object-contain" />
+              ) : (
+                <div className="h-8 w-8 rounded bg-surface-alt" />
+              )}
+              <label className="flex cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-text-muted hover:bg-surface-alt">
+                <Upload size={12} />
+                {isUploadingIcon ? "Uploading..." : "Upload"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleIconUpload(file);
+                    e.target.value = "";
+                  }}
+                />
+              </label>
+            </div>
+          </div>
+
           <Button type="submit" className="w-full">{editingId ? "Update" : "Create"}</Button>
         </form>
       </Modal>

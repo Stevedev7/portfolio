@@ -51,8 +51,11 @@ const Home = async () => {
           {skills.map((skill) => (
             <span
               key={skill.id}
-              className="rounded-full bg-ink-800 px-3 py-1.5 font-mono text-xs text-ink-400"
+              className="flex items-center gap-1.5 rounded-full bg-ink-800 px-3 py-1.5 font-mono text-xs text-ink-400"
             >
+              {skill.iconUrl && (
+                <img src={skill.iconUrl} alt="" className="h-3.5 w-3.5 object-contain" />
+              )}
               {skill.name}
             </span>
           ))}

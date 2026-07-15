@@ -31,6 +31,8 @@ spec:
           envFrom:
             - secretRef:
                 name: api-secrets
+            - configMapRef:
+                name: api-config
           volumeMounts:
             - name: logs
               mountPath: /app/apps/api/logs
