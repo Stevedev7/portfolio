@@ -28,8 +28,6 @@ spec:
               value: "http://json-server:3002"
             - name: JWT_EXPIRES_IN
               value: "1h"
-            - name: NODE_TLS_REJECT_UNAUTHORIZED
-              value: "0"
           envFrom:
             - secretRef:
                 name: api-secrets
