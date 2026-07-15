@@ -13,7 +13,7 @@ import {
 const emptyEducation: CreateEducationInput = {
   institution: "",
   degree: "",
-  fieldOfStudy: "",
+  modules: [],
   startDate: "",
   endDate: null,
 };
@@ -26,11 +26,13 @@ const Education = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [modulesText, setModulesText] = useState("");
   const { values, handleChange, setValues, reset } = useForm<CreateEducationInput>(emptyEducation);
 
   const openCreateModal = () => {
     setEditingId(null);
     reset();
+    setModulesText("");
     setIsModalOpen(true);
   };
 
@@ -39,16 +41,21 @@ const Education = () => {
     setValues({
       institution: education.institution,
       degree: education.degree,
-      fieldOfStudy: education.fieldOfStudy,
+      modules: education.modules,
       startDate: education.startDate,
       endDate: education.endDate,
     });
+    setModulesText(education.modules.join("\n"));
     setIsModalOpen(true);
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const parsed = createEducationSchema.safeParse(values);
+    const payload = {
+      ...values,
+      modules: modulesText.split("\n").map((line) => line.trim()).filter((line) => line !== ""),
+    };
+    const parsed = createEducationSchema.safeParse(payload);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Invalid education data");
       return;
@@ -86,7 +93,7 @@ const Education = () => {
         eyebrow={`Content · ${data?.data.length ?? 0} entries`}
         title="Education"
         action={
-          <Button onClick={openCreateModal} className="flex items-center gap-1.5 w-fit px-4">
+          <Button onClick={openCreateModal} className="flex items-center gap-1.5">
             <Plus size={14} />
             Add education
           </Button>
@@ -104,7 +111,7 @@ const Education = () => {
               <tr>
                 <th>Institution</th>
                 <th>Degree</th>
-                <th>Field of study</th>
+                <th>Modules</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -113,7 +120,7 @@ const Education = () => {
                 <tr key={education.id}>
                   <td className="text-text">{education.institution}</td>
                   <td className="text-text-muted">{education.degree}</td>
-                  <td className="text-text-muted">{education.fieldOfStudy}</td>
+                  <td className="text-text-muted">{education.modules.length > 0 ? education.modules.join(", ") : "—"}</td>
                   <td>
                     <div className="flex gap-1">
                       <button onClick={() => openEditModal(education)} className="rounded p-1.5 text-text-faint hover:bg-surface-alt hover:text-text" aria-label="Edit">
@@ -135,7 +142,13 @@ const Education = () => {
         <form onSubmit={handleSubmit} className="space-y-3">
           <Input placeholder="Institution" value={values.institution} onChange={(e) => handleChange("institution", e.target.value)} />
           <Input placeholder="Degree" value={values.degree} onChange={(e) => handleChange("degree", e.target.value)} />
-          <Input placeholder="Field of study" value={values.fieldOfStudy} onChange={(e) => handleChange("fieldOfStudy", e.target.value)} />
+          <textarea
+            placeholder="Modules (one per line, optional)"
+            value={modulesText}
+            onChange={(e) => setModulesText(e.target.value)}
+            className="w-full rounded-md border border-border bg-surface-alt px-3 py-2 text-sm text-text placeholder:text-text-faint focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
+            rows={3}
+          />
           <Input type="date" value={values.startDate} onChange={(e) => handleChange("startDate", e.target.value)} />
           <Input type="date" placeholder="End date" value={values.endDate ?? ""} onChange={(e) => handleChange("endDate", e.target.value || null)} />
           <Button type="submit" className="w-full">{editingId ? "Update" : "Create"}</Button>

@@ -44,14 +44,20 @@ const Projects = async () => {
 								{project.description[0]}
 							</p>
 							<div className="mb-3 flex flex-wrap gap-1.5">
-								{project.skillIds.map((id) => (
-									<span
-										key={id}
-										className="rounded-full bg-ink-800 px-2.5 py-1 font-mono text-[10px] text-ink-400"
-									>
-										{skillMap.get(id) ?? "Unknown"}
-									</span>
-								))}
+								{project.skillIds.map((id) => {
+									const skill = skills.find((s) => s.id === id);
+									return (
+										<span
+											key={id}
+											className="flex items-center gap-1 rounded-full bg-ink-800 px-2.5 py-1 font-mono text-[10px] text-ink-400"
+										>
+											{skill?.iconUrl && (
+												<img src={skill.iconUrl} alt="" className="h-3 w-3 object-contain" />
+											)}
+											{skill?.name ?? "Unknown"}
+										</span>
+									);
+								})}
 							</div>
 							<div className="flex gap-3">
 								{project.liveUrl && (

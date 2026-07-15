@@ -12,6 +12,11 @@ const envSchema = z.object({
   ADMIN_PASSWORD_HASH: z.string().min(1),
   JWT_SECRET: z.string().min(32),
   JWT_EXPIRES_IN: z.string().default("1h"),
+  MINIO_ENDPOINT: z.string().url(),
+  MINIO_ACCESS_KEY: z.string().min(1),
+  MINIO_SECRET_KEY: z.string().min(1),
+  MINIO_BUCKET: z.string().min(1),
+  MINIO_PUBLIC_URL: z.string().url(),
 });
 
 const parsed = envSchema.safeParse(process.env);
