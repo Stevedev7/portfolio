@@ -7,3 +7,4 @@ export * from "./about.schema";
 export * from "./config.schema";
 export * from "./auth.schema";
 export * from "./error.schema";
+export * from "./file.schema";

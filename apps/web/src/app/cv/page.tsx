@@ -65,9 +65,10 @@ const CV = async () => {
                   {entry.startDate} — {entry.endDate ?? "Present"}
                 </p>
               </div>
-              <p className="text-xs text-ink-400">
-                {entry.institution} · {entry.fieldOfStudy}
-              </p>
+              <p className="text-xs text-ink-400">{entry.institution}</p>
+              {entry.modules.length > 0 && (
+                <p className="mt-2 text-xs text-ink-500">{entry.modules.join(", ")}</p>
+              )}
             </div>
           ))}
         </div>

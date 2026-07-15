@@ -5,6 +5,7 @@ export const skillSchema = z.object({
   name: z.string().min(1),
   category: z.string().min(1),
   proficiency: z.string().optional(),
+  iconUrl: z.string().url().optional(),
 }).meta({ id: "Skill" });
 
 export const createSkillSchema = skillSchema.omit({ id: true }).meta({ id: "CreateSkillInput" });
