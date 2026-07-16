@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/storage/:path*",
-        destination: `${process.env.MINIO_INTERNAL_URL ?? "http://localhost:9000"}/portfolio/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_MINIO_INTERNAL_URL ?? "http://localhost:9000"}/portfolio/:path*`,
       },
     ];
   },
