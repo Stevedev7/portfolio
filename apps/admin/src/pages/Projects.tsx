@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, FolderGit2 } from "lucide-react";
-import { useForm, Button, Input, Modal, MultiSelect, Card, PageHeader, Badge, EmptyState } from "@portfolio/ui";
+import { Plus, Pencil, Trash2, FolderGit2, Upload } from "lucide-react";
+import { useForm, Button, Input, Modal, MultiSelect, Card, PageHeader, Badge, EmptyState, FilePicker } from "@portfolio/ui";
 import { createProjectSchema, type Project as ProjectType, type CreateProjectInput } from "@portfolio/schemas";
+import { useUploadFileMutation, useGetFilesQuery } from "../store/filesApi";
 import {
   useGetProjectsQuery,
   useCreateProjectMutation,
@@ -32,6 +33,9 @@ const Projects = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [descriptionText, setDescriptionText] = useState("");
   const { values, handleChange, setValues, reset } = useForm<CreateProjectInput>(emptyProject);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const { data: filesData } = useGetFilesQuery();
+  const [uploadFile, { isLoading: isUploadingImage }] = useUploadFileMutation();
 
   const skillOptions = (skillsData?.data ?? []).map((s) => ({ id: s.id, label: s.name }));
 
@@ -55,6 +59,17 @@ const Projects = () => {
     });
     setDescriptionText(project.description.join("\n"));
     setIsModalOpen(true);
+  };
+  const handleImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const result = await uploadFile(formData).unwrap();
+      handleChange("imageUrl", result.data.url);
+      toast.success("Image uploaded");
+    } catch {
+      toast.error("Image upload failed");
+    }
   };
 
   const handleSubmit = async (e: React.SubmitEvent) => {
@@ -154,7 +169,37 @@ const Projects = () => {
             className="w-full rounded-md border border-border bg-surface-alt px-3 py-2 text-sm text-text placeholder:text-text-faint focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
             rows={4}
           />
-          <Input placeholder="Image URL" value={values.imageUrl} onChange={(e) => handleChange("imageUrl", e.target.value)} />
+          <div>
+            <p className="mb-1 font-mono text-[10px] uppercase tracking-wide text-text-faint">Image</p>
+            <div className="flex items-center gap-2">
+              {values.imageUrl ? (
+                <img src={values.imageUrl} alt="" className="h-12 w-12 rounded object-cover" />
+              ) : (
+                <div className="h-12 w-12 rounded bg-surface-alt" />
+              )}
+              <label className="flex cursor-pointer items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-text-muted hover:bg-surface-alt">
+                <Upload size={12} />
+                {isUploadingImage ? "Uploading..." : "Upload"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleImageUpload(file);
+                    e.target.value = "";
+                  }}
+                />
+              </label>
+              <button
+                type="button"
+                onClick={() => setIsPickerOpen(true)}
+                className="rounded-md border border-border px-3 py-1.5 text-xs text-text-muted hover:bg-surface-alt"
+              >
+                Choose existing
+              </button>
+            </div>
+          </div>
           <Input placeholder="Live URL" value={values.liveUrl} onChange={(e) => handleChange("liveUrl", e.target.value)} />
           <Input placeholder="Repo URL" value={values.repoUrl} onChange={(e) => handleChange("repoUrl", e.target.value)} />
           <label className="flex items-center gap-2 text-sm text-text">
@@ -165,6 +210,12 @@ const Projects = () => {
           <Button type="submit" className="w-full">{editingId ? "Update" : "Create"}</Button>
         </form>
       </Modal>
+      <FilePicker
+        isOpen={isPickerOpen}
+        onClose={() => setIsPickerOpen(false)}
+        files={filesData?.data ?? []}
+        onSelect={(url) => handleChange("imageUrl", url)}
+      />
     </div>
   );
 };

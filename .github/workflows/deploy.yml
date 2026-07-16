@@ -37,7 +37,6 @@ jobs:
             --namespace=portfolio \
             --from-literal=MINIO_ENDPOINT='${{ vars.MINIO_ENDPOINT }}' \
             --from-literal=MINIO_BUCKET='${{ vars.MINIO_BUCKET }}' \
-            --from-literal=MINIO_PUBLIC_URL='${{ vars.MINIO_PUBLIC_URL }}' \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Apply Kubernetes manifests (excluding secret)

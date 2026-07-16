@@ -9,7 +9,8 @@ export const uploadFileHandler = async (req: Request, res: Response) => {
 	}
 
 	try {
-		const key = `${Date.now()}-${req.file.originalname}`;
+		const sanitizedName = req.file.originalname.replace(/[^a-zA-Z0-9._-]/g, "-");
+		const key = `${Date.now()}-${sanitizedName}`;
 		const meta = await uploadFile(key, req.file.buffer, req.file.mimetype);
 		sendSuccess(res, meta, "File uploaded successfully", 201);
 	} catch (error) {

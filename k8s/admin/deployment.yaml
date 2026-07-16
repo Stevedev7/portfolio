@@ -21,3 +21,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          env:
+            - name: API_UPSTREAM
+              value: "http://api.portfolio.svc.cluster.local:3001"
+            - name: MINIO_UPSTREAM
+              value: "http://minio.minio.svc.cluster.local:9000/portfolio"
+

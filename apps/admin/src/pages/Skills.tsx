@@ -3,6 +3,8 @@ import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Sparkles, Upload } from "lucide-react";
 import { useForm, Button, Input, Modal, Card, PageHeader, Badge, EmptyState } from "@portfolio/ui";
 import { createSkillSchema, type Skill, type CreateSkillInput } from "@portfolio/schemas";
+import { FilePicker } from "@portfolio/ui";
+import { useGetFilesQuery } from "../store/filesApi";
 import {
   useGetSkillsQuery,
   useCreateSkillMutation,
@@ -18,6 +20,8 @@ const Skills = () => {
   const [createSkill] = useCreateSkillMutation();
   const [updateSkill] = useUpdateSkillMutation();
   const [deleteSkill] = useDeleteSkillMutation();
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const { data: filesData } = useGetFilesQuery();
   const [uploadFile, { isLoading: isUploadingIcon }] = useUploadFileMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,6 +56,7 @@ const Skills = () => {
     e.preventDefault();
     const parsed = createSkillSchema.safeParse(values);
     if (!parsed.success) {
+      console.log(parsed.error.issues);
       toast.error(parsed.error.issues[0]?.message ?? "Invalid skill data");
       return;
     }
@@ -178,12 +183,25 @@ const Skills = () => {
                   }}
                 />
               </label>
+              <button
+                type="button"
+                onClick={() => setIsPickerOpen(true)}
+                className="rounded-md border border-border px-3 py-1.5 text-xs text-text-muted hover:bg-surface-alt"
+              >
+                Choose existing
+              </button>
             </div>
           </div>
 
           <Button type="submit" className="w-full">{editingId ? "Update" : "Create"}</Button>
         </form>
       </Modal>
+      <FilePicker
+        isOpen={isPickerOpen}
+        onClose={() => setIsPickerOpen(false)}
+        files={filesData?.data ?? []}
+        onSelect={(url) => handleChange("iconUrl", url)}
+      />
     </div>
   );
 };

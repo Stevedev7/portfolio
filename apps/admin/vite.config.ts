@@ -7,4 +7,13 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@portfolio/schemas"],
   },
+  server: {
+    proxy: {
+      "/storage": {
+        target: "http://localhost:9000/portfolio-files",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/storage/, ""),
+      },
+    },
+  },
 });

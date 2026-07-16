@@ -8,12 +8,12 @@ export const aboutSchema = z.object({
   bio: z.string().min(1),
   email: z.string().email(),
   location: z.string().min(1),
-  avatarUrl: z.string().url().optional(),
+  avatarUrl: z.string().optional(),
   socialLinks: z.object({
     github: z.string().url().optional(),
     linkedin: z.string().url().optional(),
     twitter: z.string().url().optional(),
   }),
-}).meta({ id: "About"});
+}).meta({ id: "About" });
 
 export type About = z.infer<typeof aboutSchema>;

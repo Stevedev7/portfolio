@@ -9,3 +9,4 @@ export * from "./components/EmptyState";
 export * from "./components/StatCard";
 export * from "./components/Badge";
 export * from "./lib/cn";
+export * from "./components/FilePicker";

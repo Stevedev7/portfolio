@@ -4,12 +4,12 @@ export const projectSchema = z.object({
   id: z.number(),
   title: z.string().min(1),
   description: z.array(z.string()),
-  imageUrl: z.string().url().optional(),
+  imageUrl: z.string().optional(),
   liveUrl: z.string().url().optional(),
   repoUrl: z.string().url().optional(),
   featured: z.boolean(),
   skillIds: z.array(z.number()),
-}).meta({ id: "Project"});
+}).meta({ id: "Project" });
 
 export const createProjectSchema = projectSchema.omit({ id: true }).meta({ id: "CreateProjectInput" });
 

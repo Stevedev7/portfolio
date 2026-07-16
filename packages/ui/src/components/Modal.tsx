@@ -32,7 +32,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-xl border border-border bg-surface p-6 shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-2 duration-150"
+        className="w-full max-w-md md:max-w-xl rounded-xl border border-border bg-surface p-6 shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-2 duration-150"
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-mono text-[10px] font-semibold uppercase tracking-wide text-text-faint">

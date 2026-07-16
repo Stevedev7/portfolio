@@ -22,7 +22,10 @@ RUN yarn workspace admin build
 # ---- Production ----
 FROM nginx:alpine AS production
 COPY --from=build /app/apps/admin/dist /usr/share/nginx/html
-COPY docker/admin/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/admin/default.conf.template /etc/nginx/templates/default.conf.template
+
+ENV API_UPSTREAM=http://api.portfolio.svc.cluster.local:3001
+ENV MINIO_UPSTREAM=http://minio.minio.svc.cluster.local:9000/portfolio
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

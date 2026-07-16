@@ -17,7 +17,7 @@ export const uploadFile = async (key: string, body: Buffer, contentType: string)
 		key,
 		size: body.length,
 		lastModified: new Date().toISOString(),
-		url: `${env.MINIO_PUBLIC_URL}/${key}`,
+		url: `/storage/${key}`,
 	};
 };
 
@@ -28,7 +28,7 @@ export const listFiles = async (): Promise<FileMeta[]> => {
 		key: obj.Key!,
 		size: obj.Size ?? 0,
 		lastModified: obj.LastModified?.toISOString() ?? "",
-		url: `${env.MINIO_PUBLIC_URL}/${obj.Key}`,
+		url: `/storage/${obj.Key}`,
 	}));
 };
 
